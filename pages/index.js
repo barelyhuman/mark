@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import marked from 'marked';
 import Spacer from 'components/spacer';
+import Button from 'components/button';
 
 const KEYS = {
   TAB: 9,
@@ -8,7 +9,6 @@ const KEYS = {
 
 export default function Home() {
   const [value, setValue] = useState('');
-  const [showPreview, setPreview] = useState(false);
 
   const handleKeyDown = (e) => {
     const selStart = e.target.selectionStart;
@@ -28,76 +28,85 @@ export default function Home() {
     }
   };
 
-  const handleChange = (e) => {
+  const handleKeyUp = (e) => {
     setValue(e.target.value);
+  };
+
+  const exportFile = () => {
+    const a = document.createElement('a');
+    document.body.appendChild(a);
+    const file = new Blob([value], { type: 'text/plain' });
+    a.href = window.URL.createObjectURL(file);
+    a.download = 'mark.md';
+    a.click();
+    document.body.removeChild(a);
   };
 
   return (
     <>
+      <h1 align="center">Mark</h1>
+      <p align="center">Web Markdown Editor</p>
+      <Spacer y={1} />
+      <div className="toolbar">
+        <p align="center">
+          <Button onClick={exportFile}>Save File</Button>
+        </p>
+      </div>
       <main>
-        <div className="toolbar">
-          <label htmlFor="">
-            <input
-              type="checkbox"
-              value={showPreview}
-              onChange={(e) => setPreview(e.target.checked)}
-            />
-            <Spacer x={0.5} inline></Spacer>
-            Preview
-          </label>
-        </div>
-        <Spacer y={2}></Spacer>
-        <div>
-          {showPreview ? (
-            <>
-              <article
-                className="preview"
-                dangerouslySetInnerHTML={{ __html: marked(value) }}
-              ></article>
-            </>
-          ) : (
-            <textarea
-              className="editor"
-              value={value}
-              autoFocus
-              placeholder="You can type in Markdown here"
-              onChange={handleChange}
-              onKeyDown={handleKeyDown}
-              contentEditable
-            ></textarea>
-          )}
+        <div className="container">
+          <textarea
+            className="editor"
+            value={value}
+            placeholder="You can type in Markdown here"
+            onKeyDown={handleKeyDown}
+            onKeyUp={handleKeyUp}
+            onChange={handleKeyUp}
+          ></textarea>
+          <article
+            className="preview"
+            dangerouslySetInnerHTML={{ __html: marked(value) }}
+          ></article>
         </div>
       </main>
       <style jsx>
         {`
           main {
-            padding: 20px;
             display: flex;
             justify-content: center;
             flex-direction: column;
             align-items: center;
           }
 
+          .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+          }
+
           .toolbar {
             display: flex;
             align-items: center;
-            width: calc(100vw / 1.5);
+            justify-content: center;
+            border-bottom: 1px solid #efefef;
           }
 
           .editor,
           .preview {
             outline: #fff;
-            border: 1px solid rgba(12, 12, 13, 0.1);
             line-height: 30px;
             font-size: 18px;
+            flex: 1;
             font-family: 'Nanum Gothic', sans-serif;
-            width: calc(100vw / 1.5);
             height: calc(100vh / 1.25);
-            box-shadow: 0px 2px 8px rgba(12, 12, 13, 0.1);
+            border: 0;
             resize: none;
             padding: 20px;
-            border-radius: 6px;
             overflow: auto;
+          }
+
+          .editor {
+            border-right: 1px solid #efefef;
           }
         `}
       </style>
