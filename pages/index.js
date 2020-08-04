@@ -59,7 +59,7 @@ export default function Home() {
               className="editor"
               value={value}
               autoFocus
-              placeholder="Type Markdown here"
+              placeholder="You can type in Markdown here"
               onChange={handleChange}
               onKeyDown={handleKeyDown}
               contentEditable
