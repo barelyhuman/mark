@@ -42,6 +42,7 @@ export default function Home() {
               value={showPreview}
               onChange={(e) => setPreview(e.target.checked)}
             />
+            <Spacer x={0.5} inline></Spacer>
             Preview
           </label>
         </div>
@@ -86,7 +87,7 @@ export default function Home() {
           .editor,
           .preview {
             outline: #fff;
-            border: 0;
+            border: 1px solid rgba(12, 12, 13, 0.1);
             line-height: 30px;
             font-size: 18px;
             font-family: 'Nanum Gothic', sans-serif;
