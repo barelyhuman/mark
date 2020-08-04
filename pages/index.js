@@ -9,6 +9,7 @@ const KEYS = {
 
 export default function Home() {
   const [value, setValue] = useState('');
+  const [dark, setDark] = useState(false);
 
   const handleKeyDown = (e) => {
     const selStart = e.target.selectionStart;
@@ -50,6 +51,8 @@ export default function Home() {
       <div className="toolbar">
         <p align="center">
           <Button onClick={exportFile}>Save File</Button>
+          <Spacer x={1} inline></Spacer>
+          <Button onClick={() => setDark(!dark)}>Toggle Dark Mode</Button>
         </p>
       </div>
       <main>
@@ -68,6 +71,14 @@ export default function Home() {
           ></article>
         </div>
       </main>
+      <style jsx global>
+        {`
+          body {
+            --bg: ${dark ? '#222' : '#fff'};
+            --fg: ${dark ? '#fff' : '#000'};
+          }
+        `}
+      </style>
       <style jsx>
         {`
           main {
@@ -88,7 +99,7 @@ export default function Home() {
             display: flex;
             align-items: center;
             justify-content: center;
-            border-bottom: 1px solid #efefef;
+            border-bottom: 1px solid var(--fg);
           }
 
           .editor,
@@ -106,7 +117,7 @@ export default function Home() {
           }
 
           .editor {
-            border-right: 1px solid #efefef;
+            border-right: 1px solid var(--fg);
           }
         `}
       </style>
