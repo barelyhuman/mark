@@ -3,7 +3,7 @@ import _Head from 'next/head';
 const Head = (props) => {
   return (
     <_Head>
-      <title>Monotes | Web Markdown</title>
+      <title>Mark | Web Markdown</title>
       <link rel="icon" href="https://reaper.im/logo.svg" />
 
       <link

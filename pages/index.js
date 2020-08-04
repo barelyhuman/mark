@@ -35,6 +35,17 @@ export default function Home() {
   return (
     <>
       <main>
+        <div className="toolbar">
+          <label htmlFor="">
+            <input
+              type="checkbox"
+              value={showPreview}
+              onChange={(e) => setPreview(e.target.checked)}
+            />
+            Preview
+          </label>
+        </div>
+        <Spacer y={2}></Spacer>
         <div>
           {showPreview ? (
             <>
@@ -55,15 +66,6 @@ export default function Home() {
             ></textarea>
           )}
         </div>
-        <Spacer y={1}></Spacer>
-        <div>
-          <input
-            type="checkbox"
-            value={showPreview}
-            onChange={(e) => setPreview(e.target.checked)}
-          />
-          Preview
-        </div>
       </main>
       <style jsx>
         {`
@@ -75,6 +77,12 @@ export default function Home() {
             align-items: center;
           }
 
+          .toolbar {
+            display: flex;
+            align-items: center;
+            width: calc(100vw / 1.5);
+          }
+
           .editor,
           .preview {
             outline: #fff;
@@ -82,8 +90,8 @@ export default function Home() {
             line-height: 30px;
             font-size: 18px;
             font-family: 'Nanum Gothic', sans-serif;
-            width: 500px;
-            height: 600px;
+            width: calc(100vw / 1.5);
+            height: calc(100vh / 1.25);
             box-shadow: 0px 2px 8px rgba(12, 12, 13, 0.1);
             resize: none;
             padding: 20px;
