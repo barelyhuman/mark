@@ -1,12 +1,20 @@
-export default function Button({ children, ...props }) {
+import cn from 'classnames';
+
+export default function Button({ children, dark, ...props }) {
+  const classes = cn({
+    dark,
+  });
+
   return (
     <>
-      <button {...props}>{children}</button>
+      <button className={classes} {...props}>
+        {children}
+      </button>
       <style jsx>{`
         button {
-          background: var(--fg);
-          color: var(--bg);
-          border: 2px solid rgba(12, 12, 13, 0.1);
+          background: #000;
+          color: #fff;
+          border: 2px solid #000;
           border-radius: 4px;
           height: 32px;
           padding: 0 16px;
@@ -21,6 +29,19 @@ export default function Button({ children, ...props }) {
           border-color: #000;
           outline: #000;
           color: #000;
+          background: transparent;
+        }
+
+        button.dark {
+          background: #fff;
+          color: #000;
+          border: 2px solid #fff;
+        }
+
+        button.dark:hover {
+          border-color: #fff;
+          outline: #fff;
+          color: #fff;
           background: transparent;
         }
       `}</style>

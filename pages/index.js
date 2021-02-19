@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import marked from 'marked';
 import Spacer from 'components/spacer';
+import Padding from 'components/padding';
 import Button from 'components/button';
 
 const KEYS = {
@@ -10,6 +11,16 @@ const KEYS = {
 export default function Home() {
   const [value, setValue] = useState('');
   const [dark, setDark] = useState(false);
+
+  useEffect(() => {
+    const theme = localStorage.getItem('theme');
+    if (!theme) {
+      localStorage.setItem('theme', 'light');
+    }
+    if (theme === 'dark') {
+      setDark(true);
+    }
+  }, []);
 
   const handleKeyDown = (e) => {
     const selStart = e.target.selectionStart;
@@ -43,44 +54,68 @@ export default function Home() {
     document.body.removeChild(a);
   };
 
+  const toggleDarkMode = () => {
+    const nextTheme = dark ? 'light' : 'dark';
+    localStorage.setItem('theme', nextTheme);
+    setDark(!dark);
+  };
+
   return (
     <>
-      <h1 align="center">Mark</h1>
-      <p align="center">Web Markdown Editor</p>
-      <Spacer y={1} />
-      <div className="toolbar">
-        <p align="center">
-          <Button onClick={exportFile}>Save File</Button>
-          <Spacer x={1} inline></Spacer>
-          <Button onClick={() => setDark(!dark)}>Toggle Dark Mode</Button>
-        </p>
-      </div>
-      <main>
-        <div className="container">
-          <textarea
-            className="editor"
-            value={value}
-            placeholder="You can type in Markdown here"
-            onKeyDown={handleKeyDown}
-            onKeyUp={handleKeyUp}
-            onChange={handleKeyUp}
-          ></textarea>
-          <article
-            className="preview"
-            dangerouslySetInnerHTML={{ __html: marked(value) }}
-          ></article>
+      <Padding all={2}>
+        <h1>Mark</h1>
+        <Spacer y={1}></Spacer>
+        <p>Web Markdown Editor</p>
+        <Spacer y={2}></Spacer>
+        <div className="toolbar">
+          <p>
+            <Button dark={dark} onClick={exportFile}>
+              Save File
+            </Button>
+            <Spacer x={1} inline></Spacer>
+            <Button dark={dark} onClick={toggleDarkMode}>
+              Toggle Dark Mode
+            </Button>
+          </p>
         </div>
-      </main>
+        <Spacer y={2}></Spacer>
+        <main>
+          <div className="container">
+            <textarea
+              className="editor"
+              value={value}
+              placeholder="You can type in Markdown here"
+              onKeyDown={handleKeyDown}
+              onKeyUp={handleKeyUp}
+              onChange={handleKeyUp}
+            ></textarea>
+            <Spacer x={2}></Spacer>
+            <article
+              className="preview"
+              dangerouslySetInnerHTML={{ __html: marked(value) }}
+            ></article>
+          </div>
+        </main>
+      </Padding>
       <style jsx global>
         {`
           body {
             --bg: ${dark ? '#222' : '#fff'};
             --fg: ${dark ? '#fff' : '#000'};
+            --shadow-color: ${dark
+              ? 'rgba(255,255,255,0.5)'
+              : 'rgba(0,0,0,0.12)'};
           }
         `}
       </style>
       <style jsx>
         {`
+          h1,
+          p {
+            padding: 0;
+            margin: 0;
+          }
+
           main {
             display: flex;
             justify-content: center;
@@ -95,13 +130,6 @@ export default function Home() {
             width: 100%;
           }
 
-          .toolbar {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-bottom: 1px solid var(--fg);
-          }
-
           .editor,
           .preview {
             outline: #fff;
@@ -110,14 +138,18 @@ export default function Home() {
             flex: 1;
             font-family: 'Nanum Gothic', sans-serif;
             height: calc(100vh / 1.25);
-            border: 0;
+            border: 2px solid var(--fg);
+            border-radius: 8px;
             resize: none;
             padding: 20px;
             overflow: auto;
+            box-shadow: 0px 1px 4px var(--shadow-color);
           }
 
           .editor {
-            border-right: 1px solid var(--fg);
+            border: 0;
+            border-radius: 8px;
+            // border-right: 1px solid var(--fg);
           }
         `}
       </style>
