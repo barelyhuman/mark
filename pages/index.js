@@ -3,13 +3,14 @@ import marked from 'marked';
 import Spacer from 'components/spacer';
 import Padding from 'components/padding';
 import Button from 'components/button';
+import placeholderText from 'constants/placeholder';
 
 const KEYS = {
   TAB: 9,
 };
 
 export default function Home() {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(placeholderText);
   const [dark, setDark] = useState(false);
 
   useEffect(() => {
