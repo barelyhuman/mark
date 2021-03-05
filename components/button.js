@@ -1,9 +1,9 @@
-import cn from 'classnames';
+import cn from 'classnames'
 
-export default function Button({ children, dark, ...props }) {
+export default function Button ({ children, dark, ...props }) {
   const classes = cn({
-    dark,
-  });
+    dark
+  })
 
   return (
     <>
@@ -44,7 +44,8 @@ export default function Button({ children, dark, ...props }) {
           color: #fff;
           background: transparent;
         }
-      `}</style>
+      `}
+      </style>
     </>
-  );
+  )
 }

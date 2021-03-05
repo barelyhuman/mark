@@ -5,12 +5,22 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "fix": "npx standard --fix || true"
   },
   "dependencies": {
     "marked": "^2.0.0",
     "next": "9.5.4",
     "react": "16.13.1",
     "react-dom": "16.13.1"
+  },
+  "standard": {
+    "ignore": [
+      "node_modules"
+    ],
+    "global":[
+      "localStorage",
+      "Blob"
+    ]
   }
 }

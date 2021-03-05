@@ -1,5 +1,5 @@
 const placeholderText = `# Mark
-## The minimalist's markdown editor
+## A minimalist's markdown editor
 
 <a href="https://reaper.im"><img height="32" src="https://reaper.im/logo.svg"/></a>
 A Mini tool by  [**Reaper**](https://reaper.im)
@@ -29,6 +29,6 @@ You can clone the repo from here [Mark](https://github.com/barelyhuman/mark)
 
 MIT
 
-**Yeah, it's free**`;
+**Yeah, it's free**`
 
-export default placeholderText;
+export default placeholderText
