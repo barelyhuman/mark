@@ -70,11 +70,11 @@ export default function Home () {
         <Spacer y={2} />
         <div className='toolbar'>
           <p>
-            <Button dark={dark} onClick={exportFile}>
+            <Button onClick={exportFile}>
               Save File
             </Button>
             <Spacer x={1} inline />
-            <Button dark={dark} onClick={toggleDarkMode}>
+            <Button onClick={toggleDarkMode}>
               Toggle Dark Mode
             </Button>
           </p>
@@ -101,12 +101,13 @@ export default function Home () {
       <style jsx global>
         {`
           body {
-            --bg: ${dark ? '#222' : '#fff'};
-            --fg: ${dark ? '#fff' : '#000'};
-            --shadow-color: ${dark
-              ? 'rgba(255,255,255,0.5)'
-              : 'rgba(0,0,0,0.12)'};
-          }
+            --bg: ${!dark ? '#ECEFF4' : '#121212'};
+            --fg: ${!dark ? '#2E3440' : '#D8DEE9'};
+            --shadow-color: ${
+              dark
+                ? 'rgb(15 17 21 / 20%) 0px 3px 6px 0px;'
+                : 'rgba(0, 0, 0, 0.12);'
+            }
         `}
       </style>
       <style jsx>
@@ -148,6 +149,7 @@ export default function Home () {
           }
 
           .editor {
+            background:${dark ? '#191919' : 'transparent'};
             border: 0;
             border-radius: 8px;
             // border-right: 1px solid var(--fg);

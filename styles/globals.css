@@ -8,6 +8,7 @@ body {
 }
 
 :root {
+  /* defaults, replaced by code in index.js */
   --bg: #fff;
   --fg: #000;
 }
