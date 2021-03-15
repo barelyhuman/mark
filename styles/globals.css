@@ -25,3 +25,17 @@ textarea {
   background: var(--bg);
   color: var(--fg);
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--fg);
+  border-radius: 8px;
+}
