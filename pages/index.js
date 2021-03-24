@@ -1,77 +1,84 @@
-import { useEffect, useRef, useState } from 'react';
-import marked from 'marked';
-import Spacer from 'components/spacer';
-import Padding from 'components/padding';
-import Button from 'components/button';
-import placeholderText from 'constants/placeholder';
+import { useEffect, useRef, useState } from 'react'
+import marked from 'marked'
+import Spacer from 'components/spacer'
+import Padding from 'components/padding'
+import Button from 'components/button'
+import placeholderText from 'constants/placeholder'
 
 const KEYS = {
-  TAB: 9,
-};
+  TAB: 9
+}
 
-export default function Home() {
-  const [value, setValue] = useState(placeholderText);
-  const [dark, setDark] = useState(false);
-  const textAreaRef = useRef();
-  const previewAreaRef = useRef();
+export default function Home () {
+  const [value, setValue] = useState(placeholderText)
+  const [dark, setDark] = useState(false)
+  const textAreaRef = useRef()
+  const previewAreaRef = useRef()
 
   useEffect(() => {
-    const theme = localStorage.getItem('theme');
+    const theme = localStorage.getItem('theme')
     if (!theme) {
-      localStorage.setItem('theme', 'light');
+      localStorage.setItem('theme', 'light')
     }
     if (theme === 'dark') {
-      setDark(true);
+      setDark(true)
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (!previewAreaRef || !textAreaRef) {
-      return;
+      return
     }
 
     textAreaRef.current.addEventListener('scroll', function () {
-      previewAreaRef.current.scrollTop = textAreaRef.current.scrollTop;
-    });
-  }, [textAreaRef, previewAreaRef]);
+      previewAreaRef.current.scrollTop = textAreaRef.current.scrollTop
+    })
+  }, [textAreaRef, previewAreaRef])
 
   const handleKeyDown = (e) => {
-    const selStart = e.target.selectionStart;
+    const selStart = e.target.selectionStart
 
     if (e.keyCode === KEYS.TAB) {
-      e.preventDefault();
-      let _value = e.target.value;
-      const tabChars = ' '.repeat(2);
+      e.preventDefault()
+      let _value = e.target.value
+      const tabChars = ' '.repeat(2)
       _value =
         e.target.value.substring(0, e.target.selectionStart) +
         tabChars +
-        e.target.value.substring(e.target.selectionEnd);
+        e.target.value.substring(e.target.selectionEnd)
 
-      e.target.selectionStart = selStart + tabChars.length;
-      e.target.selectionEnd = selStart + tabChars.length;
-      setValue(_value);
+      e.target.selectionStart = selStart + tabChars.length
+      e.target.selectionEnd = selStart + tabChars.length
+      setValue(_value)
     }
-  };
+  }
 
   const handleKeyUp = (e) => {
-    setValue(e.target.value);
-  };
+    setValue(e.target.value)
+  }
 
   const exportFile = () => {
-    const a = document.createElement('a');
-    document.body.appendChild(a);
-    const file = new Blob([value], { type: 'text/plain' });
-    a.href = window.URL.createObjectURL(file);
-    a.download = 'mark.md';
-    a.click();
-    document.body.removeChild(a);
-  };
+    const a = document.createElement('a')
+    document.body.appendChild(a)
+    const file = new Blob([value], { type: 'text/plain' })
+    a.href = window.URL.createObjectURL(file)
+    a.download = 'mark.md'
+    a.click()
+    document.body.removeChild(a)
+  }
 
   const toggleDarkMode = () => {
-    const nextTheme = dark ? 'light' : 'dark';
-    localStorage.setItem('theme', nextTheme);
-    setDark(!dark);
-  };
+    const nextTheme = dark ? 'light' : 'dark'
+    localStorage.setItem('theme', nextTheme)
+    setDark(!dark)
+  }
+
+  const clearContent = () => {
+    const shouldClear = window.confirm('Are you sure you want to clear all content')
+	  if (shouldClear) {
+      setValue('')
+	  }
+  }
 
   return (
     <>
@@ -80,21 +87,23 @@ export default function Home() {
         <Spacer y={1} />
         <p>Web Markdown Editor</p>
         <Spacer y={2} />
-        <div className="toolbar">
+        <div className='toolbar'>
           <p>
             <Button onClick={exportFile}>Save File</Button>
             <Spacer x={1} inline />
             <Button onClick={toggleDarkMode}>Toggle Dark Mode</Button>
+            <Spacer x={1} inline />
+            <Button onClick={clearContent}>Clear</Button>
           </p>
         </div>
         <Spacer y={2} />
         <main>
-          <div className="container">
+          <div className='container'>
             <textarea
-              className="editor"
+              className='editor'
               value={value}
               ref={textAreaRef}
-              placeholder="You can type in Markdown here"
+              placeholder='You can type in Markdown here'
               onKeyDown={handleKeyDown}
               onKeyUp={handleKeyUp}
               onChange={handleKeyUp}
@@ -102,7 +111,7 @@ export default function Home() {
             <Spacer x={2} />
             <article
               ref={previewAreaRef}
-              className="preview"
+              className='preview'
               dangerouslySetInnerHTML={{ __html: marked(value) }}
             />
           </div>
@@ -167,5 +176,5 @@ export default function Home() {
         `}
       </style>
     </>
-  );
+  )
 }
