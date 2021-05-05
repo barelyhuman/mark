@@ -1,7 +1,7 @@
 const placeholderText = `# Mark
 ## A minimalist's markdown editor
 
-<a href="https://reaper.im" style="background:white;border-radius:50%;padding:10px;object-fit:contain;display:inline-flex;align-items:center;justify-content:center"><img height="32" width="32" src="https://reaper.im/avatar.png"/></a>
+<a href="https://reaper.im" style="background:white;border-radius:50%;padding:10px;object-fit:contain;display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px"><img width="24" src="https://reaper.im/assets/dark-logo.png"/></a>
 A Mini tool by  [**Reaper**](https://reaper.im)
 
 Mark in a simple browser based markdown editor with simplistic features any developer could implement , though the point is to be fast and aesthetically pleasing.
