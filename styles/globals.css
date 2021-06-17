@@ -1,27 +1,26 @@
 /* Normal */
 :root {
-  --bg: #eceff4;
-  --bg-light: #e5e9f0;
-  --bg-lighter: #d8dee9;
+  --white: #fff;
+  --bg: #D8DEE9;
+  --bg-light: #E5E9F0;
+  --bg-lighter: #4C566A;
   --fg: #2e3440;
   --fg-light: #3b4252;
   --fg-lighter: #434c5e;
+  --accent: #4c566a;
   --shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
-  --br-radius: 8px;
-  --accent: #4064f2;
 }
 
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #121212;
-    --bg-light: #191919;
-    --bg-lighter: #252525;
-    --fg: #d8dee9;
+    --bg: #2E3440;
+    --bg-light: #3B4252;
+    --bg-lighter: #3B4252;
+    --fg: #eceff4;
     --fg-light: #e5e9f0;
-    --fg-lighter: #eceff4;
+    --fg-lighter: #d8dee9;
     --shadow: rgb(15 17 21 / 20%) 0px 3px 6px 0px;
-    --accent: #4064f2;
   }
 }
 
