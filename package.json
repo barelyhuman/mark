@@ -9,16 +9,18 @@
     "fix": "npx standard --fix || true"
   },
   "dependencies": {
+    "codejar": "^3.4.0",
+    "highlight.js": "^11.0.1",
     "marked": "^2.0.0",
-    "next": "9.5.4",
-    "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "next": "^11.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "standard": {
     "ignore": [
       "node_modules"
     ],
-    "global":[
+    "global": [
       "localStorage",
       "Blob"
     ]

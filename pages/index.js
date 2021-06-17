@@ -1,84 +1,114 @@
-import { useEffect, useRef, useState } from 'react'
-import marked from 'marked'
-import Spacer from 'components/spacer'
-import Padding from 'components/padding'
-import Button from 'components/button'
-import placeholderText from 'constants/placeholder'
+import { useEffect, useRef, useState } from "react";
+import marked from "marked";
+import Spacer from "components/spacer";
+import Padding from "components/padding";
+import Button from "components/button";
+import placeholderText from "constants/placeholder";
+import hljs from "highlight.js";
 
-const KEYS = {
-  TAB: 9
+let CodeJar;
+
+if (typeof window !== "undefined") {
+  const mod = require("codejar");
+  CodeJar = mod.CodeJar;
 }
 
-export default function Home () {
-  const [value, setValue] = useState(placeholderText)
-  const [dark, setDark] = useState(false)
-  const textAreaRef = useRef()
-  const previewAreaRef = useRef()
+// hljs.highlightAuto
+const KEYS = {
+  TAB: 9,
+};
+
+const highligher = (editor) => {
+  const code = editor.textContent;
+  editor.innerHTML = hljs.highlightAuto(code, ["markdown"]).value;
+};
+
+const codeOptions = {
+  tab: "  ",
+  addClosing: false,
+};
+
+const initCodeJar = (tarea, codeRef, initialValue) => {
+  if (CodeJar && !codeRef.current) {
+    tarea.current = document.querySelector("#codejar-editor");
+    codeRef.current = new CodeJar(tarea.current, highligher, codeOptions);
+    codeRef.current.updateCode(initialValue);
+  }
+};
+
+export default function Home() {
+  const [value, setValue] = useState(placeholderText);
+  const [dark, setDark] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  const textAreaRef = useRef();
+  const codeJarRef = useRef();
+  const previewAreaRef = useRef();
 
   useEffect(() => {
-    const theme = localStorage.getItem('theme')
+    const theme = localStorage.getItem("theme");
     if (!theme) {
-      localStorage.setItem('theme', 'light')
+      localStorage.setItem("theme", "light");
     }
-    if (theme === 'dark') {
-      setDark(true)
+    if (theme === "dark") {
+      setDark(true);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-    if (!previewAreaRef || !textAreaRef) {
-      return
+    if (!codeJarRef || !textAreaRef) {
+      return;
+    }
+    initCodeJar(textAreaRef, codeJarRef, value);
+  }, [textAreaRef, codeJarRef]);
+
+  useEffect(() => {
+    if (
+      !(textAreaRef && textAreaRef.current) ||
+      !(previewAreaRef && previewAreaRef.current)
+    ) {
+      return;
     }
 
-    textAreaRef.current.addEventListener('scroll', function () {
-      previewAreaRef.current.scrollTop = textAreaRef.current.scrollTop
-    })
-  }, [textAreaRef, previewAreaRef])
-
-  const handleKeyDown = (e) => {
-    const selStart = e.target.selectionStart
-
-    if (e.keyCode === KEYS.TAB) {
-      e.preventDefault()
-      let _value = e.target.value
-      const tabChars = ' '.repeat(2)
-      _value =
-        e.target.value.substring(0, e.target.selectionStart) +
-        tabChars +
-        e.target.value.substring(e.target.selectionEnd)
-
-      e.target.selectionStart = selStart + tabChars.length
-      e.target.selectionEnd = selStart + tabChars.length
-      setValue(_value)
-    }
-  }
-
-  const handleKeyUp = (e) => {
-    setValue(e.target.value)
-  }
+    textAreaRef.current.addEventListener("scroll", function () {
+      if (!previewAreaRef && previewAreaRef.current) {
+        return;
+      }
+      previewAreaRef.current.scrollTop = textAreaRef.current.scrollTop;
+    });
+  }, [textAreaRef, previewAreaRef]);
 
   const exportFile = () => {
-    const a = document.createElement('a')
-    document.body.appendChild(a)
-    const file = new Blob([value], { type: 'text/plain' })
-    a.href = window.URL.createObjectURL(file)
-    a.download = 'mark.md'
-    a.click()
-    document.body.removeChild(a)
-  }
+    const fileName = prompt("Name your file");
+    const a = document.createElement("a");
+    document.body.appendChild(a);
+    const file = new Blob([value], { type: "text/plain" });
+    a.href = window.URL.createObjectURL(file);
+    a.download = fileName.replace(/.md$/, "") + ".md" || "mark.md";
+    a.click();
+    document.body.removeChild(a);
+  };
 
   const toggleDarkMode = () => {
-    const nextTheme = dark ? 'light' : 'dark'
-    localStorage.setItem('theme', nextTheme)
-    setDark(!dark)
-  }
+    const nextTheme = dark ? "light" : "dark";
+    localStorage.setItem("theme", nextTheme);
+    setDark(!dark);
+  };
 
   const clearContent = () => {
-    const shouldClear = window.confirm('Are you sure you want to clear all content')
-	  if (shouldClear) {
-      setValue('')
-	  }
-  }
+    const shouldClear = window.confirm(
+      "Are you sure you want to clear all content"
+    );
+    if (shouldClear) {
+      codeJarRef.current.updateCode("");
+      setValue("");
+    }
+  };
+
+  codeJarRef &&
+    codeJarRef.current &&
+    codeJarRef.current.onUpdate((code) => {
+      setValue(code);
+    });
 
   return (
     <>
@@ -87,48 +117,32 @@ export default function Home () {
         <Spacer y={1} />
         <p>Web Markdown Editor</p>
         <Spacer y={2} />
-        <div className='toolbar'>
-          <p>
-            <Button onClick={exportFile}>Save File</Button>
-            <Spacer x={1} inline />
-            <Button onClick={toggleDarkMode}>Toggle Dark Mode</Button>
-            <Spacer x={1} inline />
-            <Button onClick={clearContent}>Clear</Button>
-          </p>
+        <div className="toolbar">
+          <Button onClick={exportFile}>Save File</Button>
+          <Spacer x={1} inline />
+          <Button onClick={() => setShowPreview(!showPreview)}>
+            Preview: {showPreview ? "On" : "Off"}
+          </Button>
+          <Spacer x={1} inline />
+          <Button onClick={clearContent}>Clear</Button>
         </div>
         <Spacer y={2} />
         <main>
-          <div className='container'>
-            <textarea
-              className='editor'
-              value={value}
-              ref={textAreaRef}
-              placeholder='You can type in Markdown here'
-              onKeyDown={handleKeyDown}
-              onKeyUp={handleKeyUp}
-              onChange={handleKeyUp}
-            />
-            <Spacer x={2} />
-            <article
-              ref={previewAreaRef}
-              className='preview'
-              dangerouslySetInnerHTML={{ __html: marked(value) }}
-            />
+          <div className="container">
+            <div id="codejar-editor" />
+            {showPreview ? (
+              <>
+                <Spacer x={2} />
+                <article
+                  ref={previewAreaRef}
+                  className="preview"
+                  dangerouslySetInnerHTML={{ __html: marked(value) }}
+                />
+              </>
+            ) : null}
           </div>
         </main>
       </Padding>
-      <style jsx global>
-        {`
-          body {
-            --bg: ${!dark ? '#ECEFF4' : '#121212'};
-            --fg: ${!dark ? '#2E3440' : '#D8DEE9'};
-            --shadow-color: ${
-              dark
-                ? 'rgb(15 17 21 / 20%) 0px 3px 6px 0px;'
-                : 'rgba(0, 0, 0, 0.12);'
-            }
-        `}
-      </style>
       <style jsx>
         {`
           h1,
@@ -151,13 +165,19 @@ export default function Home () {
             width: 100%;
           }
 
-          .editor,
+          .toolbar {
+            border: 2px solid var(--bg-lighter);
+            border-radius: 8px;
+            padding: 8px;
+          }
+
+          #codejar-editor,
           .preview {
             outline: #fff;
             line-height: 30px;
             font-size: 18px;
             flex: 1;
-            font-family: 'Nanum Gothic', sans-serif;
+            font-family: "Nanum Gothic", sans-serif;
             height: calc(100vh / 1.25);
             border: 2px solid var(--fg);
             border-radius: 8px;
@@ -167,8 +187,8 @@ export default function Home () {
             box-shadow: 0px 1px 4px var(--shadow-color);
           }
 
-          .editor {
-            background: ${dark ? '#191919' : 'transparent'};
+          #codejar-editor {
+            background: var(--bg-light);
             border: 0;
             border-radius: 8px;
             // border-right: 1px solid var(--fg);
@@ -176,5 +196,5 @@ export default function Home () {
         `}
       </style>
     </>
-  )
+  );
 }
