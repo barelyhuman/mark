@@ -24,8 +24,8 @@ export default function Button({ children, ...props }) {
             border-color: #000;
             outline: #000;
             cursor: poiner;
-            color: var(--bg);
-            background: var(--fg-lighter);
+            color: var(--fg-lighter);
+            background: var(--bg-lighter);
           }
         `}
       </style>

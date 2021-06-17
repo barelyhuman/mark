@@ -132,7 +132,7 @@ export default function Home() {
         <Spacer y={2} />
         <main>
           <div className="container">
-            <div id="codejar-editor" />
+            <div id="codejar-editor"/>
             {showPreview ? (
               <>
                 <Spacer x={2} />
@@ -184,18 +184,13 @@ export default function Home() {
             height: calc(100vh / 1.25);
             border: 2px solid var(--fg);
             border-radius: 8px;
-            resize: none;
+            resize: none !important;
             padding: 20px;
             overflow: auto;
             box-shadow: 0px 1px 4px var(--shadow-color);
           }
 
-          #codejar-editor {
-            background: var(--bg-light);
-            border: 0;
-            border-radius: 8px;
-            // border-right: 1px solid var(--fg);
-          }
+          
         `}
       </style>
     </>

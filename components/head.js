@@ -14,6 +14,11 @@ const Head = (props) => {
 
       <link
         rel="stylesheet"
+        href="https://unpkg.com/open-color@1.8.0/open-color.css"
+      />
+
+      <link
+        rel="stylesheet"
         href={highlightJSTheme.light}
         media="(prefers-color-scheme: light)"
       />
