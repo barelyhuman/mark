@@ -78,7 +78,10 @@ export default function Home() {
   }, [textAreaRef, previewAreaRef]);
 
   const exportFile = () => {
-    const fileName = prompt("Name your file");
+    const fileName = prompt("Name your file", "mark.md");
+    if (!fileName) {
+      return;
+    }
     const a = document.createElement("a");
     document.body.appendChild(a);
     const file = new Blob([value], { type: "text/plain" });

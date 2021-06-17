@@ -1,4 +1,3 @@
-
 export default function Button({ children, ...props }) {
   return (
     <>
@@ -9,6 +8,7 @@ export default function Button({ children, ...props }) {
             background: var(--bg);
             color: var(--fg);
             border: 0px;
+            font-size: 14px;
             border-radius: 4px;
             height: 32px;
             padding: 0 16px;
