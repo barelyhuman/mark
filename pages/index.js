@@ -1,65 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import marked from "marked";
+
 import Spacer from "components/spacer";
 import Padding from "components/padding";
 import Button from "components/button";
 import placeholderText from "constants/placeholder";
-import hljs from "highlight.js";
-
-let CodeJar;
-
-if (typeof window !== "undefined") {
-  const mod = require("codejar");
-  CodeJar = mod.CodeJar;
-}
-
-// hljs.highlightAuto
-const KEYS = {
-  TAB: 9,
-};
-
-const highligher = (editor) => {
-  const code = editor.textContent;
-  editor.innerHTML = hljs.highlightAuto(code, ["markdown"]).value;
-};
-
-const codeOptions = {
-  tab: "  ",
-  addClosing: false,
-};
-
-const initCodeJar = (tarea, codeRef, initialValue) => {
-  if (CodeJar && !codeRef.current) {
-    tarea.current = document.querySelector("#codejar-editor");
-    codeRef.current = new CodeJar(tarea.current, highligher, codeOptions);
-    codeRef.current.updateCode(initialValue);
-  }
-};
+import Preview from "components/preview";
+import Editor from "components/editor";
 
 export default function Home() {
   const [value, setValue] = useState(placeholderText);
-  const [dark, setDark] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
-  const textAreaRef = useRef();
-  const codeJarRef = useRef();
   const previewAreaRef = useRef();
-
-  useEffect(() => {
-    const theme = localStorage.getItem("theme");
-    if (!theme) {
-      localStorage.setItem("theme", "light");
-    }
-    if (theme === "dark") {
-      setDark(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!codeJarRef || !textAreaRef) {
-      return;
-    }
-    initCodeJar(textAreaRef, codeJarRef, value);
-  }, [textAreaRef, codeJarRef]);
+  const textAreaRef = useRef();
 
   useEffect(() => {
     if (
@@ -70,6 +22,7 @@ export default function Home() {
     }
 
     textAreaRef.current.addEventListener("scroll", function () {
+      console.log("scrolled");
       if (!previewAreaRef && previewAreaRef.current) {
         return;
       }
@@ -91,12 +44,6 @@ export default function Home() {
     document.body.removeChild(a);
   };
 
-  const toggleDarkMode = () => {
-    const nextTheme = dark ? "light" : "dark";
-    localStorage.setItem("theme", nextTheme);
-    setDark(!dark);
-  };
-
   const clearContent = () => {
     const shouldClear = window.confirm(
       "Are you sure you want to clear all content"
@@ -106,12 +53,6 @@ export default function Home() {
       setValue("");
     }
   };
-
-  codeJarRef &&
-    codeJarRef.current &&
-    codeJarRef.current.onUpdate((code) => {
-      setValue(code);
-    });
 
   return (
     <>
@@ -132,15 +73,15 @@ export default function Home() {
         <Spacer y={2} />
         <main>
           <div className="container">
-            <div id="codejar-editor" />
+            <Editor
+              ref={textAreaRef}
+              value={value}
+              onChangeText={(text) => setValue(text)}
+            />
             {showPreview ? (
               <>
                 <Spacer x={2} />
-                <article
-                  ref={previewAreaRef}
-                  className="preview"
-                  dangerouslySetInnerHTML={{ __html: marked(value) }}
-                />
+                <Preview ref={previewAreaRef} value={value} />
               </>
             ) : null}
           </div>
@@ -171,21 +112,6 @@ export default function Home() {
           .toolbar {
             border-bottom: 2px solid var(--bg-lighter);
             padding: 8px;
-          }
-
-          #codejar-editor,
-          .preview {
-            outline: #fff;
-            line-height: 28.8px;
-            font-size: 16px;
-            flex: 1;
-            font-family: "Hack", monospace;
-            height: calc(100vh / 1.25);
-            border-radius: 8px;
-            resize: none !important;
-            padding: 20px;
-            overflow: auto;
-            box-shadow: 0px 1px 4px var(--shadow-color);
           }
         `}
       </style>
