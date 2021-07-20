@@ -169,8 +169,7 @@ export default function Home() {
           }
 
           .toolbar {
-            border: 2px solid var(--bg-lighter);
-            border-radius: 8px;
+            border-bottom: 2px solid var(--bg-lighter);
             padding: 8px;
           }
 
@@ -182,7 +181,6 @@ export default function Home() {
             flex: 1;
             font-family: "Hack", monospace;
             height: calc(100vh / 1.25);
-            border: 2px solid var(--fg);
             border-radius: 8px;
             resize: none !important;
             padding: 20px;
