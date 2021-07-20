@@ -61,6 +61,18 @@ const Editor = React.forwardRef(({ value, onChangeText, ...props }, ref) => {
           }
         `}
       </style>
+      <style jsx global>
+        {`
+          span.hljs-section {
+            font-size: 24px;
+            line-height: 43.2px;
+          }
+
+          span.hljs-bullet {
+            padding-left: 10px;
+          }
+        `}
+      </style>
     </>
   );
 });
