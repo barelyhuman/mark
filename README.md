@@ -15,6 +15,10 @@ Simple Markdown editor built with syntax highlighting and an optional preview th
 - Export the raw .md file
 - Optional Preview
 
+## TODO
+
+- Browser storage (store the currently entered text in the browser)
+
 ## Contribute
 
 The easiest way to contribute is to fork the project and raise PR's. Though, do inform the mainter as to what issue you pick up to avoid overlaps
