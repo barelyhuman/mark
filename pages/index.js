@@ -132,7 +132,7 @@ export default function Home() {
         <Spacer y={2} />
         <main>
           <div className="container">
-            <div id="codejar-editor"/>
+            <div id="codejar-editor" />
             {showPreview ? (
               <>
                 <Spacer x={2} />
@@ -177,10 +177,10 @@ export default function Home() {
           #codejar-editor,
           .preview {
             outline: #fff;
-            line-height: 30px;
-            font-size: 18px;
+            line-height: 28.8px;
+            font-size: 16px;
             flex: 1;
-            font-family: "Nanum Gothic", sans-serif;
+            font-family: "Hack", monospace;
             height: calc(100vh / 1.25);
             border: 2px solid var(--fg);
             border-radius: 8px;
@@ -189,8 +189,6 @@ export default function Home() {
             overflow: auto;
             box-shadow: 0px 1px 4px var(--shadow-color);
           }
-
-          
         `}
       </style>
     </>
