@@ -49,8 +49,8 @@ export default function Home() {
       "Are you sure you want to clear all content"
     );
     if (shouldClear) {
-      codeJarRef.current.updateCode("");
       setValue("");
+      textAreaRef.current.innerHTML = "";
     }
   };
 
