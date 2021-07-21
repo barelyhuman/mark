@@ -50,11 +50,6 @@ const Head = (props) => {
       <link rel="icon" href="https://reaper.im/logo.svg" />
 
       <link
-        href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap"
-        rel="stylesheet"
-      />
-
-      <link
         rel="stylesheet"
         href="https://unpkg.com/open-color@1.8.0/open-color.css"
       />
