@@ -6,6 +6,9 @@ import Button from "components/button";
 import placeholderText from "constants/placeholder";
 import Preview from "components/preview";
 import Editor from "components/editor";
+import marked from "marked";
+import {copy} from "lib/copy"
+import tinyToast from "tiny-toast";
 
 export default function Home() {
   const [value, setValue] = useState(placeholderText);
@@ -54,6 +57,18 @@ export default function Home() {
     }
   };
 
+  const copyAsHTML = async ()=>{
+    if(!value){
+      tinyToast.show("nothing to copy...").hide(2000)
+
+      return;
+    }
+    const htmlValue = marked(value);
+    await copy(htmlValue);
+    tinyToast.show("Copied").hide(2000)
+
+  }
+
   return (
     <>
       <Padding all={2}>
@@ -67,6 +82,8 @@ export default function Home() {
           <Button onClick={() => setShowPreview(!showPreview)}>
             Preview: {showPreview ? "On" : "Off"}
           </Button>
+          <Spacer x={1} inline />
+          <Button onClick={copyAsHTML}>Copy as HTML</Button>
           <Spacer x={1} inline />
           <Button onClick={clearContent}>Clear</Button>
         </div>

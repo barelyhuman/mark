@@ -1703,6 +1703,11 @@ timers-browserify@2.0.12, timers-browserify@^2.0.4:
   dependencies:
     setimmediate "^1.0.4"
 
+tiny-toast@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/tiny-toast/-/tiny-toast-1.2.0.tgz#37588137274d06f47cf8499136669aa93af4bf8d"
+  integrity sha1-N1iBNydNBvR8+EmRNmaaqTr0v40=
+
 to-arraybuffer@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/to-arraybuffer/-/to-arraybuffer-1.0.1.tgz#7d229b1fcc637e466ca081180836a7aabff83f43"
