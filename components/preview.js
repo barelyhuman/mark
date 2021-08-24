@@ -23,7 +23,7 @@ const Preview = React.forwardRef(({ value, ...props }, ref) => {
             line-height: 28.8px;
             font-size: 16px;
             flex: 1;
-            font-family: "Hack", monospace;
+            font-family: "JetBrainsMono Nerd Font Mono", monospace;
             height: calc(100vh / 1.25);
             border-radius: 8px;
             resize: none !important;

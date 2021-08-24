@@ -1,4 +1,6 @@
-@import url("//cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css");
+/* @import url("//cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css"); */
+
+@import "./fonts.css";
 
 /* Normal */
 :root {
@@ -30,8 +32,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: "Hack", -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: "JetBrainsMono Nerd Font Mono", monospace;
   font-size: 14px;
   line-height: 25.2px;
 }

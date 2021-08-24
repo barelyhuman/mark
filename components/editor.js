@@ -51,7 +51,7 @@ const Editor = React.forwardRef(({ value, onChangeText, ...props }, ref) => {
             line-height: 28.8px;
             font-size: 16px;
             flex: 1;
-            font-family: "Hack", monospace;
+            font-family: "JetBrainsMono Nerd Font Mono", monospace;
             height: calc(100vh / 1.25);
             border-radius: 8px;
             resize: none !important;
@@ -66,6 +66,7 @@ const Editor = React.forwardRef(({ value, onChangeText, ...props }, ref) => {
           span.hljs-section {
             font-size: 24px;
             line-height: 43.2px;
+            color: black;
           }
 
           span.hljs-bullet {
