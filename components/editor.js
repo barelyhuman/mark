@@ -66,7 +66,7 @@ const Editor = React.forwardRef(({ value, onChangeText, ...props }, ref) => {
           span.hljs-section {
             font-size: 24px;
             line-height: 43.2px;
-            color: black;
+            color: var(--fg);
           }
 
           span.hljs-bullet {

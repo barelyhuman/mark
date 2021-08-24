@@ -32,7 +32,8 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: "JetBrainsMono Nerd Font Mono", monospace;
+  /* font-family: "JetBrainsMono Nerd Font Mono", monospace; */
+  font-family: "iAWriterQuattro", monospace;
   font-size: 14px;
   line-height: 25.2px;
 }
