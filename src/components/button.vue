@@ -2,8 +2,6 @@
   <button
     v-bind="$attrs"
     class="
-      relative
-      z-10
       block
       rounded-md
       bg-gray-100

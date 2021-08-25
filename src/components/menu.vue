@@ -1,6 +1,9 @@
 <template>
   <div class="relative">
-    <Button @click="state.dropdownOpen = !state.dropdownOpen">
+    <Button
+      @click="state.dropdownOpen = !state.dropdownOpen"
+      class="relative z-10"
+    >
       {{ triggerLabel }}
     </Button>
 

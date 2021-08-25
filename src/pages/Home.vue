@@ -1,5 +1,22 @@
 <template>
   <BaseLayout>
+    <h1
+      class="
+        mb-12
+        text-2xl
+        font-semibold
+        leading-none
+        tracking-tighter
+        text-black
+        title-font
+      "
+    >
+      Mark
+      <br />
+      <small class="text-sm tracking-normal">
+        ~ Quick Web Markdown Editor</small
+      >
+    </h1>
     <div class="flex justify-between">
       <Menu triggerLabel="Menu" class="mr-2">
         <MenuItem
@@ -18,8 +35,7 @@
 
       <Button
         v-bind:class="{
-          'bg-green-600': state.showPreview,
-          'text-white': state.showPreview,
+          'bg-green-600 text-white hover:bg-green-400': state.showPreview,
           'bg-gray-100': !state.showPreview,
         }"
         @click="handlePreviewToggle"
