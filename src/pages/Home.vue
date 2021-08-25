@@ -1,5 +1,6 @@
 <template>
   <BaseLayout>
+    <Toast ref="toastRef" />
     <h1
       class="
         mb-12
@@ -60,10 +61,13 @@ import MenuItem from "../components/menu-item.vue";
 import Editor from "../components/editor.vue";
 import Button from "../components/button.vue";
 import Preview from "../components/preview.vue";
+import Toast from "../components/toast.vue";
 import { copy } from "../lib/copy";
 import { defaultMarkdownText } from "../resources/default-md";
-import { reactive, onMounted, onUnmounted } from "vue";
+import { reactive, onMounted, ref, onUnmounted } from "vue";
 import marked from "marked";
+
+const toastRef = ref(null);
 
 const state = reactive({ code: defaultMarkdownText, showPreview: false });
 
@@ -97,11 +101,12 @@ function handleChange(code) {
 }
 
 async function handleCopyAsHTML() {
-  if (!value) {
+  if (!state.code) {
     return;
   }
   const htmlValue = marked(state.code);
   await copy(htmlValue);
+  toastRef.value.createSuccessToast("Copied!");
 }
 
 function handlePreviewToggle() {
