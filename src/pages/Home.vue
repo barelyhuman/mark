@@ -16,8 +16,14 @@
         />
       </Menu>
 
-      <Button @click="handlePreviewToggle"
-        >Preview: {{ state.showPreview ? "on" : "off" }}</Button
+      <Button
+        v-bind:class="{
+          'bg-green-600': state.showPreview,
+          'text-white': state.showPreview,
+          'bg-gray-100': !state.showPreview,
+        }"
+        @click="handlePreviewToggle"
+        >Preview</Button
       >
     </div>
     <div class="border my-2"></div>
@@ -39,10 +45,11 @@ import Editor from "../components/editor.vue";
 import Button from "../components/button.vue";
 import Preview from "../components/preview.vue";
 import { copy } from "../lib/copy";
+import { defaultMarkdownText } from "../resources/default-md";
 import { reactive, onMounted, onUnmounted } from "vue";
 import marked from "marked";
 
-const state = reactive({ code: "", showPreview: false });
+const state = reactive({ code: defaultMarkdownText, showPreview: false });
 
 onMounted(() => {
   document.addEventListener("keydown", shortcutListener.bind(this));
