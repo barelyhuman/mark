@@ -11,6 +11,7 @@
     "codejar": "^3.5.0",
     "highlight.js": "^11.2.0",
     "marked": "^3.0.2",
+    "tailwindcss": "^2.2.7",
     "vue": "^3.0.5"
   },
   "devDependencies": {

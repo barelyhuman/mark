@@ -1,18 +1,18 @@
-export async function copy(text) {
+export async function copy (text) {
   if (!navigator.clipboard) {
-    return _copyDeprecated(text);
+    return _copyDeprecated(text)
   }
-  await navigator.clipboard.writeText(text);
+  await navigator.clipboard.writeText(text)
 }
 
-function _copyDeprecated(text) {
-  var copyTextarea = document.createElement("textarea");
-  copyTextarea.style.position = "fixed";
-  copyTextarea.style.opacity = "0";
-  copyTextarea.textContent = text;
+function _copyDeprecated (text) {
+  const copyTextarea = document.createElement('textarea')
+  copyTextarea.style.position = 'fixed'
+  copyTextarea.style.opacity = '0'
+  copyTextarea.textContent = text
 
-  document.body.appendChild(copyTextarea);
-  copyTextarea.select();
-  document.execCommand("copy");
-  document.body.removeChild(copyTextarea);
+  document.body.appendChild(copyTextarea)
+  copyTextarea.select()
+  document.execCommand('copy')
+  document.body.removeChild(copyTextarea)
 }

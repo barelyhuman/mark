@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import { defineProps, reactive } from "vue";
+import { reactive } from "vue";
 import MenuItem from "./menu-item.vue";
 import Button from "./button.vue";
 
