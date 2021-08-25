@@ -9,9 +9,16 @@
   </div>
 </template>
 <script>
-import { reactive, ref, onMounted, watchEffect } from "vue";
+import { ref, onMounted } from "vue";
 import { CodeJar } from "codejar";
-import hljs from "highlight.js";
+import hljs from "highlight.js/lib/core";
+import javascript from "highlight.js/lib/languages/javascript";
+import markdown from "highlight.js/lib/languages/markdown";
+import golang from "highlight.js/lib/languages/go";
+
+hljs.registerLanguage("javascript", javascript);
+hljs.registerLanguage("markdown", markdown);
+hljs.registerLanguage("go", golang);
 
 const props = {
   code: String,
