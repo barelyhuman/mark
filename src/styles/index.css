@@ -13,8 +13,13 @@ body {
 
 span.hljs-section {
   color: black;
+  font-size: 1.2rem;
 }
 
 span.hljs-bullet {
   padding-left: 10px;
+}
+
+span.hljs-code {
+  color: #868e96;
 }
