@@ -65,7 +65,7 @@ import Toast from "../components/toast.vue";
 import { copy } from "../lib/copy";
 import { defaultMarkdownText } from "../resources/default-md";
 import { reactive, onMounted, ref, onUnmounted } from "vue";
-import marked from "marked";
+import marked from "../lib/marked";
 
 const toastRef = ref(null);
 
