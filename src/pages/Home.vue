@@ -69,7 +69,17 @@ import marked from "../lib/marked";
 
 const toastRef = ref(null);
 
-const state = reactive({ code: defaultMarkdownText, showPreview: false });
+const STORAGE_TOKEN = Symbol("reaper-mark").toString();
+
+const getDefaultCode = () => {
+  const existingCode = localStorage.getItem(STORAGE_TOKEN);
+  if (existingCode && existingCode.length) {
+    return existingCode;
+  }
+  return defaultMarkdownText;
+};
+
+const state = reactive({ code: getDefaultCode(), showPreview: false });
 
 onMounted(() => {
   document.addEventListener("keydown", shortcutListener.bind(this));
@@ -98,6 +108,7 @@ function shortcutListener(e) {
 
 function handleChange(code) {
   state.code = code;
+  localStorage.setItem(STORAGE_TOKEN, code);
 }
 
 async function handleCopyAsHTML() {
