@@ -23,3 +23,7 @@ span.hljs-bullet {
 span.hljs-code {
   color: #868e96;
 }
+
+.min-80-screen {
+  min-height: 80vh;
+}
