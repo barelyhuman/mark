@@ -4,7 +4,6 @@ import hljs from "highlight.js";
 
 marked.setOptions({
   highlight: function (code, lang, callback) {
-    console.log({ code, lang, callback });
     const highlightedCode = hljs.highlight(code, {
       language: lang || "plaintext",
     }).value;

@@ -32,6 +32,8 @@
           modifier="⌘ + ⇧ + s "
           @click="handleSaveAsHTML"
         />
+        <MenuItem label="Save File as PDF" @click="handleSaveAsPDF" />
+        <MenuItem label="Save File as Image" @click="handleSaveAsImage" />
       </Menu>
 
       <Button
@@ -66,6 +68,7 @@ import { copy } from "../lib/copy";
 import { defaultMarkdownText } from "../resources/default-md";
 import { reactive, onMounted, ref, onUnmounted } from "vue";
 import marked from "../lib/marked";
+import html2pdf from "html2pdf.js";
 
 const toastRef = ref(null);
 
@@ -148,14 +151,78 @@ function handleSaveFile() {
   exportFile(fileNameWithExt, file);
 }
 
+async function handleSaveAsPDF() {
+  try {
+    const fileName = prompt("Name your file", "mark.pdf");
+    if (!fileName) {
+      return;
+    }
+    state.showPreview = true;
+    const htmlString = marked(state.code);
+    const options = {
+      margin: 0.25,
+      filename: fileName,
+      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+    };
+    setTimeout(() => {
+      html2pdf()
+        .set(options)
+        .from(htmlString, "string")
+        .to("pdf")
+        .save()
+        .then(() => {
+          state.showPreview = false;
+        });
+    }, 250);
+  } catch (err) {
+    console.error(err);
+  }
+}
+async function handleSaveAsImage() {
+  try {
+    const fileName = prompt("Name your file", "mark.jpeg");
+    if (!fileName) {
+      return;
+    }
+    state.showPreview = true;
+    const htmlString = marked(state.code);
+    const options = {
+      margin: 0.25,
+      filename: fileName,
+      image: { type: "jpeg", quality: 0.98 },
+    };
+
+    setTimeout(() => {
+      html2pdf()
+        .set(options)
+        .from(htmlString, "string")
+        .to("container")
+        .toImg()
+        .outputImg("datauri")
+        .then((dataURL) => {
+          exportFile(fileName,dataURL,false)
+          state.showPreview = false;
+        })
+    }, 250);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 function createFile(data) {
   return new Blob([data], { type: "text/plain" });
 }
 
-function exportFile(filename, file) {
+function exportFile(filename, file, generateDataURI = true) {
   const a = document.createElement("a");
   document.body.appendChild(a);
-  a.href = window.URL.createObjectURL(file);
+  let uri;
+  if (generateDataURI) {
+    uri = window.URL.createObjectURL(file);
+  } else {
+    uri = file;
+  }
+  a.href = uri;
   a.download = filename;
   a.click();
   document.body.removeChild(a);
