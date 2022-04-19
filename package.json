@@ -13,7 +13,7 @@
     "downloadjs": "^1.4.7",
     "highlight.js": "^11.5.1",
     "html2pdf.js": "0.10.1",
-    "marked": "^4.0.14",
+    "marked": "^4.0.10",
     "vue": "^3.0.5"
   },
   "devDependencies": {
