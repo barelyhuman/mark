@@ -2,15 +2,7 @@
   <BaseLayout>
     <Toast ref="toastRef" />
     <h1
-      class="
-        mb-12
-        text-2xl
-        font-semibold
-        leading-none
-        tracking-tighter
-        text-black
-        title-font
-      "
+      class="mb-12 text-2xl font-semibold leading-none tracking-tighter text-black title-font"
     >
       Mark
       <br />
@@ -69,6 +61,9 @@ import { defaultMarkdownText } from "../resources/default-md";
 import { reactive, onMounted, ref, onUnmounted } from "vue";
 import marked from "../lib/marked";
 import html2pdf from "html2pdf.js";
+import getMDStyles from "../lib/get-md-styles";
+import toImage from "dom-to-image";
+import download from "downloadjs";
 
 const toastRef = ref(null);
 
@@ -153,56 +148,37 @@ function handleSaveFile() {
 
 async function handleSaveAsPDF() {
   try {
-    const fileName = prompt("Name your file", "mark.pdf");
-    if (!fileName) {
-      return;
-    }
-    state.showPreview = true;
-    const htmlString = marked(state.code);
+    let htmlString = marked(state.code);
+    htmlString += `<style>
+    ${getMDStyles()}
+    </style>`;
     const options = {
       margin: 0.25,
-      filename: fileName,
+      filename: "mark.pdf",
       jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
     };
-    setTimeout(() => {
-      html2pdf()
-        .set(options)
-        .from(htmlString, "string")
-        .to("pdf")
-        .save()
-        .then(() => {
-          state.showPreview = false;
-        });
-    }, 250);
+
+    html2pdf().set(options).from(htmlString, "string").to("pdf").save();
   } catch (err) {
     console.error(err);
   }
 }
 async function handleSaveAsImage() {
   try {
-    const fileName = prompt("Name your file", "mark.jpeg");
-    if (!fileName) {
-      return;
-    }
     state.showPreview = true;
-    const htmlString = marked(state.code);
-    const options = {
-      margin: 0.25,
-      filename: fileName,
-      image: { type: "jpeg", quality: 0.98 },
-    };
 
     setTimeout(() => {
-      html2pdf()
-        .set(options)
-        .from(htmlString, "string")
-        .to("container")
-        .toImg()
-        .outputImg("datauri")
-        .then((dataURL) => {
-          exportFile(fileName,dataURL,false)
+      toImage
+        .toBlob(document.querySelector(".markdown-preview"), {
+          bgcolor: "#fff",
+        })
+        .then((blob) => {
+          download(blob, `mark.png`, "image/png");
           state.showPreview = false;
         })
+        .catch((err) => {
+          console.error(err);
+        });
     }, 250);
   } catch (err) {
     console.error(err);

@@ -8,10 +8,12 @@
   },
   "license": "MIT",
   "dependencies": {
-    "codejar": "^3.5.0",
-    "highlight.js": "^11.2.0",
-    "html2pdf.js": "0.9.3",
-    "marked": "^3.0.2",
+    "codejar": "^3.6.0",
+    "dom-to-image": "^2.6.0",
+    "downloadjs": "^1.4.7",
+    "highlight.js": "^11.5.1",
+    "html2pdf.js": "0.10.1",
+    "marked": "^4.0.14",
     "vue": "^3.0.5"
   },
   "devDependencies": {
