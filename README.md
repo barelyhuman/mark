@@ -15,9 +15,34 @@ Simple Markdown editor built with syntax highlighting and an optional preview th
 - Export the raw .md file
 - Optional Preview
 
-## TODO
+## Development / Self Hosting 
 
-- Browser storage (store the currently entered text in the browser)
+The app is a straightforward vuejs app and just a client sided one. You can set it up using the following steps. 
+
+**Prerequisite**
+1. [Node](https://nodejs.org/en/) at least v12 
+2. [git](https://git-scm.com/)
+
+**Steps**
+```sh
+# clone this repo 
+git clone https://github.com/barelyhuman/mark
+
+# cd into it and install the basic dependencies
+npm i 
+
+# run the dev server to check if it's working (optional)
+npm dev 
+
+# build the app into static files 
+npm build
+
+# you can then serve the output folder using your favorite http serving solution 
+npx serve dist
+# or 
+python –m SimpleHTTPServer dist
+```
+
 
 ## Contribute
 
