@@ -1,4 +1,4 @@
-import marked from "marked";
+import { marked } from "marked";
 import { escape } from "./helpers";
 import hljs from "highlight.js";
 
