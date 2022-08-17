@@ -1,8 +1,6 @@
 <h1 align="center">Mark</h1>
 <p align="center">Web Markdown Editor</p>
 
-If you like any of my work, you can support me on: https://barelyhuman.dev/donate
-
 [![](https://img.shields.io/badge/license-mit-black?style=for-the-badge)](LICENSE)
 
 ## Motivation
