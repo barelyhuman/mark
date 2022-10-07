@@ -1,17 +1,8 @@
 <template>
   <BaseLayout>
     <Toast ref="toastRef" />
-    <h1
-      class="mb-12 text-2xl font-semibold leading-none tracking-tighter text-black title-font"
-    >
-      Mark
-      <br />
-      <small class="text-sm tracking-normal">
-        ~ Quick Web Markdown Editor</small
-      >
-    </h1>
-    <div class="flex justify-between">
-      <Menu triggerLabel="Menu" class="mr-2">
+    <div class="flex justify-between mb-2">
+      <Menu triggerLabel="Menu">
         <MenuItem
           label="Toggle Preview"
           modifier="⌘ + k"
@@ -28,16 +19,13 @@
         <MenuItem label="Save File as Image" @click="handleSaveAsImage" />
       </Menu>
 
-      <Button
-        v-bind:class="{
-          'bg-green-600 text-white hover:bg-green-400': state.showPreview,
-          'bg-gray-100': !state.showPreview,
-        }"
-        @click="handlePreviewToggle"
-        >Preview</Button
-      >
+      <Button class="ghost" @click="handlePreviewToggle" title="Toggle preview state">
+        <span
+          class="preview-dot"
+          v-bind:class="{ on: state.showPreview }"
+        ></span>
+      </Button>
     </div>
-    <div class="border my-2"></div>
     <Editor
       v-if="!state.showPreview"
       class="mt-1"
@@ -206,7 +194,4 @@ function exportFile(filename, file, generateDataURI = true) {
 </script>
 
 <style scoped>
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 </style>

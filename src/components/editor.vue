@@ -1,10 +1,10 @@
 <template>
-  <div class="bg-white p-3 min-80-screen">
+  <div>
     <div
       name=""
       ref="texteditor"
       autofocus="true"
-      class="code-editor min-80-screen outline-none min-h-screen w-full"
+      class="code-editor w-full"
     ></div>
   </div>
 </template>

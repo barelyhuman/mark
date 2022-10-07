@@ -1,29 +1,76 @@
+@import url("https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400");
+@import url("https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400");
+
 :root {
-  --grid-point: 4px;
+  --base-spacing: 4px;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
+}
+
+a {
+  color: #1085ff;
 }
 
 .code-editor {
-  font-family: "iAWriterQuattroS";
+  font-family: "IBM Plex Mono", monospace;
+  line-height: 2;
 }
 
-span.hljs-section {
-  color: black;
-  font-size: 1.2rem;
+
+
+.preview-dot {
+  height: 12px;
+  width: 12px;
+  border-radius: 25px;
+  background: #e5c07b;
 }
 
-span.hljs-bullet {
-  padding-left: 10px;
+.preview-dot.on {
+  background: #98c379;
 }
 
-span.hljs-code {
-  color: #868e96;
+.flex {
+  display: flex;
 }
 
-.min-80-screen {
-  min-height: 80vh;
+.flex-col {
+  flex-direction: column;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.p-5 {
+  padding: calc(var(--base-spacing) * 5);
+}
+
+.mt-1 {
+  margin-top: calc(var(--base-spacing) * 1);
+}
+
+.mb-2 {
+  margin-bottom: calc(var(--base-spacing) * 2);
+}
+
+.mr-2 {
+  margin-right: calc(var(--base-spacing) * 2);
+}
+
+.w-full {
+  width: 100%;
+}
+
+.min-w-screen {
+  min-width: 100vw;
+}
+
+.min-h-screen {
+  min-height: 100vh;
 }

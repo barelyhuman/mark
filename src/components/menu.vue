@@ -1,33 +1,16 @@
 <template>
-  <div class="relative">
-    <Button
-      @click="state.dropdownOpen = !state.dropdownOpen"
-      class="relative z-10"
-    >
+  <div class="container">
+    <Button @click="state.dropdownOpen = !state.dropdownOpen" class="trigger">
       {{ triggerLabel }}
     </Button>
 
     <div
       v-if="state.dropdownOpen"
-      class="h-screen w-screen fixed z-10"
+      class="dropdown"
       @click="state.dropdownOpen = false"
     ></div>
 
-    <div
-      v-if="state.dropdownOpen"
-      class="
-        absolute
-        left-0
-        mt-2
-        py-2
-        w-60
-        bg-white
-        rounded-md
-        shadow-xl
-        border
-        z-20
-      "
-    >
+    <div v-if="state.dropdownOpen" class="dropdown-items">
       <slot></slot>
     </div>
   </div>
@@ -35,7 +18,6 @@
 
 <script setup>
 import { reactive } from "vue";
-import MenuItem from "./menu-item.vue";
 import Button from "./button.vue";
 
 defineProps({
@@ -47,7 +29,30 @@ const state = reactive({ dropdownOpen: false });
 </script>
 
 <style scoped>
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+.container {
+  position: relative;
+}
+
+.trigger {
+  position: relative;
+}
+.dropdown {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  z-index: 10;
+}
+
+.dropdown-items {
+  position: absolute;
+  left: 0;
+  margin-top: 8px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  width: 30em;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+  z-index: 20;
+}
 </style>

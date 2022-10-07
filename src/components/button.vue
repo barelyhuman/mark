@@ -1,15 +1,5 @@
 <template>
-  <button
-    v-bind="$attrs"
-    class="
-      block
-      rounded-md
-      bg-gray-100
-      p-2
-      focus:outline-none
-      hover:bg-gray-200
-    "
-  >
+  <button v-bind="$attrs">
     <slot></slot>
   </button>
 </template>
@@ -21,7 +11,26 @@ defineProps({
 </script>
 
 <style scoped>
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  background: #f3f3f3;
+  outline: black;
+  border: 0px;
+  border-radius: 6px;
+}
+
+button:hover {
+  background: #ddd;
+}
+
+button.ghost {
+  background: transparent;
+}
+
+button.ghost:hover {
+  background: transparent;
+}
 </style>

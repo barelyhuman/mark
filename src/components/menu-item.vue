@@ -1,19 +1,8 @@
 <template>
-  <a
-    v-bind:href="href"
-    class="
-      block
-      px-4
-      py-2
-      text-sm
-      capitalize
-      text-gray-700
-      hover:bg-black hover:text-white
-    "
-  >
-    <span class="flex justify-between">
+  <a v-bind:href="href" class="item-wrapper">
+    <span class="item-content">
       <span>{{ label }} </span>
-      <span class="text-gray-400 text-xs"> {{ modifier }}</span>
+      <span class="menu-modifier" v-if="modifier"> {{ modifier }}</span>
     </span>
   </a>
 </template>
@@ -27,7 +16,30 @@ defineProps({
 </script>
 
 <style scoped>
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+.item-wrapper {
+  display: block;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #333;
+}
+
+.item-wrapper:hover {
+  background: #f3f3f3;
+}
+
+.item-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.menu-modifier {
+  font-size: 10px;
+  background: #f3f3f3;
+  border-radius: 6px;
+  padding: 4px;
+}
 </style>

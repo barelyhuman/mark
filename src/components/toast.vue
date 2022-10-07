@@ -6,7 +6,7 @@
       'bg-green-500 text-white': state.success,
       'bg-red-500 text-white': state.error,
     }"
-    class="fixed top-2 right-2 shadow-xl border w-60 px-5 py-4 rounded-md z-20"
+    class="toast-container"
   >
     {{ state.message }}
   </div>
@@ -49,9 +49,32 @@ defineExpose({
 });
 </script>
 
-
 <style scoped>
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+.bg-black {
+  background: black;
+}
+.text-white {
+  color: white;
+}
+.bg-green-500 {
+  background: #98c379;
+}
+.bg-red-500 {
+  background: #e06c75;
+}
+
+.toast-container {
+  position: fixed;
+  top: calc(var(--base-spacing) * 2);
+  right: calc(var(--base-spacing) * 2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  border: 0px;
+  width: 30em;
+  padding-left: calc(var(--base-spacing) * 5);
+  padding-right: calc(var(--base-spacing) * 5);
+  padding-top: calc(var(--base-spacing) * 4);
+  padding-bottom: calc(var(--base-spacing) * 4);
+  border-radius: calc(var(--base-spacing) * 4);
+  z-index: 20;
+}
 </style>

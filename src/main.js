@@ -1,7 +1,6 @@
 import { createApp, h } from "vue";
 import Home from "./pages/Home.vue";
 import "./styles/index.css";
-import "./styles/fonts.css";
 
 const routes = {
   "/": Home,
