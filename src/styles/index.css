@@ -3,6 +3,21 @@
 
 :root {
   --base-spacing: 4px;
+  --base: #e9eaeb;
+  --overlay: #d3d5d6;
+  --surface: #bdbfc2;
+  --text: #030405;
+  --subtle: #07090a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --base: #232b32;
+    --overlay: #20272d;
+    --surface: #1c2228;
+    --text: white;
+    --subtle: #e9eaeb;
+  }
 }
 
 * {
@@ -11,6 +26,8 @@
 
 body {
   font-family: "IBM Plex Sans", sans-serif;
+  background: var(--base);
+  color: var(--text);
 }
 
 a {
@@ -21,8 +38,6 @@ a {
   font-family: "IBM Plex Mono", monospace;
   line-height: 2;
 }
-
-
 
 .preview-dot {
   height: 12px;

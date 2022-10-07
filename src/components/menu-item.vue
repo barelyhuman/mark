@@ -24,11 +24,11 @@ defineProps({
   padding-bottom: 8px;
   font-size: 12px;
   text-transform: uppercase;
-  color: #333;
+  color:var(--subtle);
 }
 
 .item-wrapper:hover {
-  background: #f3f3f3;
+  background: var(--surface);
 }
 
 .item-content {
@@ -38,7 +38,7 @@ defineProps({
 
 .menu-modifier {
   font-size: 10px;
-  background: #f3f3f3;
+  background: var(--surface);
   border-radius: 6px;
   padding: 4px;
 }

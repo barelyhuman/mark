@@ -16,14 +16,15 @@ button {
   justify-content: center;
   align-items: center;
   padding: 8px;
-  background: #f3f3f3;
+  background: var(--overlay);
+  color: var(--text);
   outline: black;
   border: 0px;
   border-radius: 6px;
 }
 
 button:hover {
-  background: #ddd;
+  background: var(--surface);
 }
 
 button.ghost {
