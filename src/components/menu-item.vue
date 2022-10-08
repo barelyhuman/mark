@@ -24,10 +24,11 @@ defineProps({
   padding-bottom: 8px;
   font-size: 12px;
   text-transform: uppercase;
-  color:var(--subtle);
+  color: var(--subtle);
 }
 
 .item-wrapper:hover {
+  cursor: pointer;
   background: var(--surface);
 }
 

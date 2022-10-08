@@ -24,6 +24,7 @@ button {
 }
 
 button:hover {
+  cursor: pointer;
   background: var(--surface);
 }
 

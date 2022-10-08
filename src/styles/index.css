@@ -3,11 +3,14 @@
 
 :root {
   --base-spacing: 4px;
-  --base: #e9eaeb;
-  --overlay: #d3d5d6;
-  --surface: #bdbfc2;
+  --base: #fff;
+  --overlay: #f8f9fa;
+  --surface: #f1f3f5;
   --text: #030405;
   --subtle: #07090a;
+  --warn: #e5c07b;
+  --success: #98c379;
+  --toolbar-height: 42px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -40,14 +43,14 @@ a {
 }
 
 .preview-dot {
-  height: 12px;
-  width: 12px;
+  height: 10px;
+  width: 10px;
   border-radius: 25px;
-  background: #e5c07b;
+  background: var(--warn);
 }
 
 .preview-dot.on {
-  background: #98c379;
+  background: var(--success);
 }
 
 .flex {
@@ -60,6 +63,10 @@ a {
 
 .justify-between {
   justify-content: space-between;
+}
+
+.align-center {
+  align-items: center;
 }
 
 .p-5 {
@@ -88,4 +95,35 @@ a {
 
 .min-h-screen {
   min-height: 100vh;
+}
+
+.toolbar {
+  color: var(--subtle);
+  height: var(--toolbar-height);
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  padding-right: 10px;
+  display: inline-flex;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  min-width: 350px;
+  border-radius: 50px;
+  transform: translateX(-50%);
+  background: var(--overlay);
+  box-shadow: 0px 2px 4px rgba(0,0,0,0.12);
+}
+
+.trigger {
+  min-width: 50px;
+  max-width: 150px;
+  border-radius: 0px !important;
+  height: var(--toolbar-height);
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+
+.trigger.active {
+  color: var(--success);
 }

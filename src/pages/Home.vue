@@ -2,36 +2,37 @@
   <BaseLayout>
     <Toast ref="toastRef" />
     <div class="flex justify-between mb-2">
-      <Menu triggerLabel="Menu">
-        <MenuItem
-          label="Toggle Preview"
-          modifier="⌘ + k"
-          @click="handlePreviewToggle"
-        />
-        <MenuItem label="Copy as HTML" @click="handleCopyAsHTML" />
-        <MenuItem label="Save File" modifier="⌘ + s" @click="handleSaveFile" />
-        <MenuItem
-          label="Save File as HTML"
-          modifier="⌘ + ⇧ + s "
-          @click="handleSaveAsHTML"
-        />
-        <MenuItem label="Save File as PDF" @click="handleSaveAsPDF" />
-        <MenuItem label="Save File as Image" @click="handleSaveAsImage" />
-      </Menu>
-
-      <Button class="ghost" @click="handlePreviewToggle" title="Toggle preview state">
-        <span
-          class="preview-dot"
-          v-bind:class="{ on: state.showPreview }"
-        ></span>
-      </Button>
+      <Toolbar>
+        <Menu triggerLabel="Menu">
+          <MenuItem label="Toggle Preview" modifier="⌘ + k" @click="handlePreviewToggle" />
+          <MenuItem label="Copy as HTML" @click="handleCopyAsHTML" />
+          <MenuItem label="Save File" modifier="⌘ + s" @click="handleSaveFile" />
+          <MenuItem label="Save File as HTML" modifier="⌘ + ⇧ + s " @click="handleSaveAsHTML" />
+          <MenuItem label="Save File as PDF" @click="handleSaveAsPDF" />
+          <MenuItem label="Save File as Image" @click="handleSaveAsImage" />
+        </Menu>
+        <div class="flex align-center">
+          <Button class="trigger ghost" v-bind:class="{ active: state.copied }" @click="handleCopyAsHTML">
+            <svg v-if="!state.copied" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+              stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <rect x="8" y="8" width="12" height="12" rx="2"></rect>
+              <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path>
+            </svg>
+            <svg v-if="state.copied" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+              stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <circle cx="12" cy="12" r="9"></circle>
+              <path d="M9 12l2 2l4 -4"></path>
+            </svg>
+          </Button>
+          <Button class="ghost" @click="handlePreviewToggle">
+            <span class="preview-dot" v-bind:class="{'on':state.showPreview}"></span>
+          </Button>
+        </div>
+      </Toolbar>
     </div>
-    <Editor
-      v-if="!state.showPreview"
-      class="mt-1"
-      v-on:change="handleChange"
-      v-bind:code="state.code"
-    ></Editor>
+    <Editor v-if="!state.showPreview" class="mt-1" v-on:change="handleChange" v-bind:code="state.code"></Editor>
     <Preview v-if="state.showPreview" v-bind:code="marked(state.code)" />
   </BaseLayout>
 </template>
@@ -40,6 +41,7 @@
 import BaseLayout from "../components/base-layout.vue";
 import Menu from "../components/menu.vue";
 import MenuItem from "../components/menu-item.vue";
+import Toolbar from "../components/toolbar.vue";
 import Editor from "../components/editor.vue";
 import Button from "../components/button.vue";
 import Preview from "../components/preview.vue";
@@ -65,7 +67,11 @@ const getDefaultCode = () => {
   return defaultMarkdownText;
 };
 
-const state = reactive({ code: getDefaultCode(), showPreview: false });
+const state = reactive({
+  copied: false,
+  code: getDefaultCode(),
+  showPreview: false,
+});
 
 onMounted(() => {
   document.addEventListener("keydown", shortcutListener.bind(this));
@@ -103,7 +109,10 @@ async function handleCopyAsHTML() {
   }
   const htmlValue = marked(state.code);
   await copy(htmlValue);
-  toastRef.value.createSuccessToast("Copied!");
+  state.copied = true;
+  setTimeout(() => {
+    state.copied = false;
+  }, 2500);
 }
 
 function handlePreviewToggle() {
@@ -194,4 +203,5 @@ function exportFile(filename, file, generateDataURI = true) {
 </script>
 
 <style scoped>
+
 </style>

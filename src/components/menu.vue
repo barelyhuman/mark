@@ -1,14 +1,10 @@
 <template>
   <div class="container">
-    <Button @click="state.dropdownOpen = !state.dropdownOpen" class="trigger">
+    <Button @click="state.dropdownOpen = !state.dropdownOpen" class="ghost trigger">
       {{ triggerLabel }}
     </Button>
 
-    <div
-      v-if="state.dropdownOpen"
-      class="dropdown"
-      @click="state.dropdownOpen = false"
-    ></div>
+    <div v-if="state.dropdownOpen" class="dropdown" @click="state.dropdownOpen = false"></div>
 
     <div v-if="state.dropdownOpen" class="dropdown-items">
       <slot></slot>
@@ -36,6 +32,7 @@ const state = reactive({ dropdownOpen: false });
 .trigger {
   position: relative;
 }
+
 .dropdown {
   position: fixed;
   height: 100vh;
@@ -46,12 +43,13 @@ const state = reactive({ dropdownOpen: false });
 .dropdown-items {
   position: absolute;
   left: 0;
+  bottom: calc(var(--toolbar-height) + 10px);
   margin-top: 8px;
   padding-top: 8px;
   padding-bottom: 8px;
-  width: 30em;
+  width: 15em;
   background: var(--overlay);
-  color:var(--subtle);
+  color: var(--subtle);
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
   z-index: 20;
