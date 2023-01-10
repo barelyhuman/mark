@@ -1,11 +1,13 @@
 export default function getMDStyles() {
   return `
-
       @import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
       @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
-      
-      body{
-        font-family:"Inter",sans-serif;
+    
+
+      body {
+        font-family: "IBM Plex Sans", sans-serif;
+        background: white;
+        color: black;
       }
 
        h1 {
