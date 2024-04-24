@@ -1,39 +1,64 @@
 <template>
   <BaseLayout>
     <Toast ref="toastRef" />
-    <div class="flex justify-between mb-2">
-      <Toolbar>
-        <Menu triggerLabel="Menu">
-          <MenuItem label="Toggle Preview" modifier="⌘ + k" @click="handlePreviewToggle" />
-          <MenuItem label="Copy as HTML" @click="handleCopyAsHTML" />
-          <MenuItem label="Save File" modifier="⌘ + s" @click="handleSaveFile" />
-          <MenuItem label="Save File as HTML" modifier="⌘ + ⇧ + s " @click="handleSaveAsHTML" />
-          <MenuItem label="Save File as PDF" @click="handleSaveAsPDF" />
-          <MenuItem label="Save File as Image" @click="handleSaveAsImage" />
-        </Menu>
-        <div class="flex align-center">
-          <Button class="trigger ghost" v-bind:class="{ active: state.copied }" @click="handleCopyAsHTML">
-            <svg v-if="!state.copied" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-              stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-              <rect x="8" y="8" width="12" height="12" rx="2"></rect>
-              <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path>
-            </svg>
-            <svg v-if="state.copied" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-              stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-              <circle cx="12" cy="12" r="9"></circle>
-              <path d="M9 12l2 2l4 -4"></path>
-            </svg>
-          </Button>
-          <Button class="ghost" @click="handlePreviewToggle">
-            <span class="preview-dot" v-bind:class="{'on':state.showPreview}"></span>
-          </Button>
-        </div>
-      </Toolbar>
-    </div>
-    <Editor v-if="!state.showPreview" class="mt-1" v-on:change="handleChange" v-bind:code="state.code"></Editor>
-    <Preview v-if="state.showPreview" v-bind:code="marked(state.code)" />
+    <Editor v-on:change="handleChange"></Editor>
+    <Toolbar>
+      <Menu triggerLabel="Menu">
+        <MenuItem label="Copy as HTML" @click="handleCopyAsHTML" />
+        <MenuItem label="Save File" modifier="⌘ + s" @click="handleSaveFile" />
+        <MenuItem
+          label="Save File as HTML"
+          modifier="⌘ + ⇧ + s "
+          @click="handleSaveAsHTML"
+        />
+        <MenuItem label="Save File as PDF" @click="handleSaveAsPDF" />
+        <MenuItem label="Save File as Image" @click="handleSaveAsImage" />
+      </Menu>
+      <div class="flex align-center">
+        <Button
+          class="trigger ghost"
+          v-bind:class="{ active: state.copied }"
+          @click="handleCopyAsHTML"
+        >
+          <svg
+            v-if="!state.copied"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <rect x="8" y="8" width="12" height="12" rx="2"></rect>
+            <path
+              d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"
+            ></path>
+          </svg>
+          <svg
+            v-if="state.copied"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M9 12l2 2l4 -4"></path>
+          </svg>
+        </Button>
+      </div>
+    </Toolbar>
+    <!-- <Editor v-if="!state.showPreview" class="mt-1" v-on:change="handleChange" v-bind:code="state.code"></Editor>
+    <Preview v-if="state.showPreview" v-bind:code="marked(state.code)" /> -->
   </BaseLayout>
 </template>
 
@@ -42,7 +67,7 @@ import BaseLayout from "../components/base-layout.vue";
 import Menu from "../components/menu.vue";
 import MenuItem from "../components/menu-item.vue";
 import Toolbar from "../components/toolbar.vue";
-import Editor from "../components/editor.vue";
+import Editor from "../components/editor-rich.vue";
 import Button from "../components/button.vue";
 import Preview from "../components/preview.vue";
 import Toast from "../components/toast.vue";
@@ -70,7 +95,6 @@ const getDefaultCode = () => {
 const state = reactive({
   copied: false,
   code: getDefaultCode(),
-  showPreview: false,
 });
 
 onMounted(() => {
@@ -82,11 +106,6 @@ onUnmounted(() => {
 });
 
 function shortcutListener(e) {
-  if (e.key === "k" && (e.ctrlKey || e.metaKey)) {
-    e.preventDefault();
-    return handlePreviewToggle();
-  }
-
   if (e.key === "s" && (e.ctrlKey || e.metaKey) && e.shiftKey) {
     e.preventDefault();
     return handleSaveAsHTML();
@@ -113,13 +132,6 @@ async function handleCopyAsHTML() {
   setTimeout(() => {
     state.copied = false;
   }, 2500);
-}
-
-function handlePreviewToggle() {
-  state.showPreview = !state.showPreview;
-  const _code = state.code;
-  state.code = "";
-  state.code = _code;
 }
 
 function handleSaveAsHTML() {
@@ -162,16 +174,16 @@ async function handleSaveAsPDF() {
 }
 async function handleSaveAsImage() {
   try {
-    state.showPreview = true;
-
     setTimeout(() => {
       toImage
-        .toBlob(document.querySelector(".markdown-preview"), {
-          bgcolor: "#fff",
+        .toBlob(document.querySelector(".ql-editor"), {
+          bgcolor: "var(--base)",
+          style: {
+            color: "var(--text)",
+          },
         })
         .then((blob) => {
           download(blob, `mark.png`, "image/png");
-          state.showPreview = false;
         })
         .catch((err) => {
           console.error(err);
@@ -202,6 +214,4 @@ function exportFile(filename, file, generateDataURI = true) {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
