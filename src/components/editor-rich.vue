@@ -15,10 +15,14 @@ import Quill from "quill";
 import QuillMarkdown from "quilljs-markdown";
 import { onMounted, ref } from "vue";
 import { deltaToMarkdown } from "quill-delta-to-markdown";
+import { MarkdownToQuill } from "md-to-quill-delta";
 
 export default {
   name: "EditorRich",
   emits: ["change"],
+  props: {
+    initialCode: String,
+  },
   setup(props, { emit }) {
     const texteditor = ref(null);
     let quill;
@@ -27,13 +31,17 @@ export default {
         theme: "bubble",
       });
 
+      // enable markdown conversion
+      new QuillMarkdown(quill, {});
+
+      const converter = new MarkdownToQuill({});
+      const ops = converter.convert(props.initialCode);
+      quill.setContents(ops);
+
       quill.on("text-change", () => {
         const markdownCode = deltaToMarkdown(quill.getContents().ops);
         emit("change", markdownCode);
       });
-
-      // enable markdown conversion
-      new QuillMarkdown(quill, {});
 
       if (texteditor.value) {
         const editor = texteditor.value.querySelector(".ql-editor");

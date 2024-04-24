@@ -1,7 +1,7 @@
 <template>
   <BaseLayout>
     <Toast ref="toastRef" />
-    <Editor v-on:change="handleChange"></Editor>
+    <Editor v-on:change="handleChange" v-bind:initialCode="state.code"></Editor>
     <Toolbar>
       <Menu triggerLabel="Menu">
         <MenuItem label="Copy as HTML" @click="handleCopyAsHTML" />
