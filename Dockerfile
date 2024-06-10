@@ -1,12 +1,11 @@
-#build stage for a Node.js application
-FROM node:lts-alpine as build-stage
+FROM node:18-alpine as build-stage
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
+COPY pnpm-lock.yaml ./
+RUN npm i -g pnpm@8.15.7; pnpm i
 COPY . .
-RUN npm run build
+RUN pnpm build
 
-#production stage
 FROM nginx:stable-alpine as production-stage
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 EXPOSE 80
