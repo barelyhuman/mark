@@ -4,6 +4,9 @@
     <Editor v-on:change="handleChange" v-bind:initialCode="state.code"></Editor>
     <Toolbar>
       <Menu triggerLabel="Menu">
+        <MenuItem label="Copy as Markdown" @click="handleCopyAsMD" 
+        modifier="⌘ + ⇧ + c"
+        />
         <MenuItem label="Copy as HTML" @click="handleCopyAsHTML" />
         <MenuItem label="Save File" modifier="⌘ + s" @click="handleSaveFile" />
         <MenuItem
@@ -106,6 +109,11 @@ onUnmounted(() => {
 });
 
 function shortcutListener(e) {
+  if (e.key === "c" && (e.ctrlKey || e.metaKey) && e.shiftKey) {
+    e.preventDefault();
+    return handleCopyAsMD();
+  }
+
   if (e.key === "s" && (e.ctrlKey || e.metaKey) && e.shiftKey) {
     e.preventDefault();
     return handleSaveAsHTML();
@@ -120,6 +128,17 @@ function shortcutListener(e) {
 function handleChange(code) {
   state.code = code;
   localStorage.setItem(STORAGE_TOKEN, code);
+}
+
+async function handleCopyAsMD(){
+  if (!state.code) {
+    return;
+  }
+  await copy(state.code)
+  state.copied = true
+  setTimeout(() => {
+    state.copied = false;
+  }, 2500);
 }
 
 async function handleCopyAsHTML() {
