@@ -15,6 +15,11 @@ Simple Markdown editor built with syntax highlighting and an optional preview th
 
 ## Development / Self Hosting 
 
+### Docker
+TBD
+
+### Manually using Source Code
+
 The app is a straightforward vuejs app and just a client sided one. You can set it up using the following steps. 
 
 **Prerequisite**
