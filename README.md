@@ -13,39 +13,68 @@ Simple Markdown editor built with syntax highlighting and an optional preview th
 - Export the raw .md file
 - Optional Preview
 
-## Development / Self Hosting 
+## Development / Self Hosting
 
 ### Docker
-TBD
+
+```sh
+# for a single run
+; docker run -p 8000:80 ghcr.io/barelyhuman/mark:pro
+# or in detached mode / background mode
+docker run -p 8000:80 --detach ghcr.io/barelyhuman/mark:pro
+```
+
+Or if you prefer using a docker compose
+
+```yaml
+version: "3"
+
+services:
+  mark:
+    image: ghcr.io/barelyhuman/mark:pro
+    ports:
+      - 8000:80
+    restart: unless-stopped
+```
+
+and then
+
+```sh
+# for a single run
+; docker compose up
+# or in detached mode / background mode
+; docker compose up -d
+```
 
 ### Manually using Source Code
 
-The app is a straightforward vuejs app and just a client sided one. You can set it up using the following steps. 
+The app is a straightforward vuejs app and just a client sided one. You can set it up using the following steps.
 
 **Prerequisite**
-1. [Node](https://nodejs.org/en/) at least v12 
+
+1. [Node](https://nodejs.org/en/) at least v12
 2. [git](https://git-scm.com/)
 
 **Steps**
+
 ```sh
-# clone this repo 
+# clone this repo
 git clone https://github.com/barelyhuman/mark
 
 # cd into it and install the basic dependencies
-npm i 
+npm i
 
 # run the dev server to check if it's working (optional)
-npm dev 
+npm dev
 
-# build the app into static files 
+# build the app into static files
 npm build
 
-# you can then serve the output folder using your favorite http serving solution 
+# you can then serve the output folder using your favorite http serving solution
 npx serve dist
-# or 
+# or
 python –m SimpleHTTPServer dist
 ```
-
 
 ## Contribute
 
