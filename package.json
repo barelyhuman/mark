@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "next": "bumpp"
   },
   "license": "MIT",
   "dependencies": {
@@ -25,6 +26,7 @@
     "@vitejs/plugin-vue": "^5.0.4",
     "@vue/compiler-sfc": "^3.4.24",
     "autoprefixer": "^10.4.19",
+    "bumpp": "^9.4.1",
     "cssnano": "^6.1.2",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.3",
