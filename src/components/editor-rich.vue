@@ -14,7 +14,7 @@ import "quilljs-markdown/dist/quilljs-markdown-common-style.css";
 import Quill from "quill";
 import QuillMarkdown from "quilljs-markdown";
 import { onMounted, ref } from "vue";
-import { deltaToMarkdown } from "quill-delta-to-markdown";
+import { deltaToMarkdown } from "../lib/quill/delta-md.js";
 import { MarkdownToQuill } from "md-to-quill-delta";
 
 export default {
@@ -40,6 +40,8 @@ export default {
 
       quill.on("text-change", () => {
         const markdownCode = deltaToMarkdown(quill.getContents().ops);
+        console.log({ deltas: quill.getContents().ops });
+        console.log({ markdownCode });
         emit("change", markdownCode);
       });
 

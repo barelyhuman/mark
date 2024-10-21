@@ -152,3 +152,13 @@ a {
   box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.12);
   border: 1px solid var(--overlay);
 }
+
+.ql-bubble .ql-editor code {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.ql-bubble .ql-editor .ql-code-block-container {
+  background: var(--overlay);
+  color: var(--text);
+}

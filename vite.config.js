@@ -12,7 +12,6 @@ export default defineConfig({
           highlightjs: ["highlight.js"],
           quill: [
             "quill",
-            "quill-delta-to-markdown",
             "quilljs-markdown",
             "md-to-quill-delta",
           ],
