@@ -1,15 +1,10 @@
 <template>
-  <div
-    name=""
-    ref="texteditor"
-    autofocus="true"
-    class="flex-1 w-full code-editor"
-    id="editor"
-  ></div>
+  <div name="" ref="texteditor" autofocus="true" class="flex-1 w-full code-editor" id="editor"></div>
 </template>
 <script>
 import "quill/dist/quill.bubble.css";
 import "quilljs-markdown/dist/quilljs-markdown-common-style.css";
+import hljs from "highlight.js";
 
 import Quill from "quill";
 import QuillMarkdown from "quilljs-markdown";
@@ -21,6 +16,7 @@ export default {
   name: "EditorRich",
   emits: ["change"],
   props: {
+    opsState: String,
     initialCode: String,
   },
   setup(props, { emit }) {
@@ -29,20 +25,45 @@ export default {
     onMounted(() => {
       quill = new Quill("#editor", {
         theme: "bubble",
+        modules: {
+          syntax: {
+            hljs,
+          },
+          toolbar: [
+            ["bold", "italic", "underline", "strike"],
+            ["blockquote", "code-block"],
+          ],
+        },
       });
 
       // enable markdown conversion
-      new QuillMarkdown(quill, {});
+      new QuillMarkdown(quill, {
+        debug: true,
+      });
 
       const converter = new MarkdownToQuill({});
-      const ops = converter.convert(props.initialCode);
+      let ops = [];
+
+      try {
+        ops = JSON.parse(props.opsState);
+      } catch (err) {
+        // Migration change to move from 
+        // storing markdown to quill delta 
+        // if a syntax error is found, try converting it 
+        if (err instanceof SyntaxError) {
+          ops = converter.convert(props.opsState);
+        }
+      }
+
       quill.setContents(ops);
 
       quill.on("text-change", () => {
-        const markdownCode = deltaToMarkdown(quill.getContents().ops);
-        console.log({ deltas: quill.getContents().ops });
-        console.log({ markdownCode });
-        emit("change", markdownCode);
+        const { ops } = quill.getContents();
+        const markdownCode = deltaToMarkdown(ops);
+        emit("change", {
+          code: markdownCode,
+          ops: JSON.stringify(ops),
+        });
       });
 
       if (texteditor.value) {

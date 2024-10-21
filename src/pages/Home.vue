@@ -1,58 +1,26 @@
 <template>
   <BaseLayout>
     <Toast ref="toastRef" />
-    <Editor v-on:change="handleChange" v-bind:initialCode="state.code"></Editor>
+    <Editor v-on:change="handleChange" v-bind:initialCode="state.code" v-bind:opsState="state.opsFromStorage"></Editor>
     <Toolbar>
       <Menu triggerLabel="Menu">
-        <MenuItem label="Copy as Markdown" @click="handleCopyAsMD" 
-        modifier="⌘ + ⇧ + c"
-        />
+        <MenuItem label="Copy as Markdown" @click="handleCopyAsMD" modifier="⌘ + ⇧ + c" />
         <MenuItem label="Copy as HTML" @click="handleCopyAsHTML" />
         <MenuItem label="Save File" modifier="⌘ + s" @click="handleSaveFile" />
-        <MenuItem
-          label="Save File as HTML"
-          modifier="⌘ + ⇧ + s "
-          @click="handleSaveAsHTML"
-        />
+        <MenuItem label="Save File as HTML" modifier="⌘ + ⇧ + s " @click="handleSaveAsHTML" />
         <MenuItem label="Save File as PDF" @click="handleSaveAsPDF" />
         <MenuItem label="Save File as Image" @click="handleSaveAsImage" />
       </Menu>
       <div class="flex align-center">
-        <Button
-          class="trigger ghost"
-          v-bind:class="{ active: state.copied }"
-          @click="handleCopyAsHTML"
-        >
-          <svg
-            v-if="!state.copied"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
+        <Button class="trigger ghost" v-bind:class="{ active: state.copied }" @click="handleCopyAsHTML">
+          <svg v-if="!state.copied" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+            stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
             <rect x="8" y="8" width="12" height="12" rx="2"></rect>
-            <path
-              d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"
-            ></path>
+            <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path>
           </svg>
-          <svg
-            v-if="state.copied"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
+          <svg v-if="state.copied" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+            stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
             <circle cx="12" cy="12" r="9"></circle>
             <path d="M9 12l2 2l4 -4"></path>
@@ -82,22 +50,32 @@ import html2pdf from "html2pdf.js";
 import getMDStyles from "../lib/get-md-styles";
 import toImage from "dom-to-image";
 import download from "downloadjs";
+import { deltaToMarkdown } from "../lib/quill/delta-md.js";
 
 const toastRef = ref(null);
 
 const STORAGE_TOKEN = Symbol("reaper-mark").toString();
 
 const getDefaultCode = () => {
-  const existingCode = localStorage.getItem(STORAGE_TOKEN);
-  if (existingCode && existingCode.length) {
-    return existingCode;
+  const existingState = localStorage.getItem(STORAGE_TOKEN);
+  try {
+    const ops = JSON.parse(existingState || [])
+    const markdownText = deltaToMarkdown(ops)
+    return markdownText;
+  } catch (err) {
+    return defaultMarkdownText
   }
-  return defaultMarkdownText;
+};
+
+const getFromStorage = () => {
+  const existingState = localStorage.getItem(STORAGE_TOKEN) || [];
+  return existingState;
 };
 
 const state = reactive({
   copied: false,
   code: getDefaultCode(),
+  opsFromStorage: getFromStorage(),
 });
 
 onMounted(() => {
@@ -125,17 +103,17 @@ function shortcutListener(e) {
   }
 }
 
-function handleChange(code) {
+function handleChange({ code, ops }) {
   state.code = code;
-  localStorage.setItem(STORAGE_TOKEN, code);
+  localStorage.setItem(STORAGE_TOKEN, ops);
 }
 
-async function handleCopyAsMD(){
+async function handleCopyAsMD() {
   if (!state.code) {
     return;
   }
-  await copy(state.code)
-  state.copied = true
+  await copy(state.code);
+  state.copied = true;
   setTimeout(() => {
     state.copied = false;
   }, 2500);

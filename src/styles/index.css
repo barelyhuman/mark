@@ -162,3 +162,11 @@ a {
   background: var(--overlay);
   color: var(--text);
 }
+
+.ql-code-block-container .ql-ui {
+  background: var(--surface);
+  padding: 4px 8px;
+  color: var(--text);
+  border:0px;
+  border-radius:4px;
+}

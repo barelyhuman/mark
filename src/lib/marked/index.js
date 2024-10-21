@@ -32,9 +32,10 @@ const renderer = {
       );
     }
 
+    const langPrefix = this.options.langPrefix || "";
     return (
       '<pre class="codeblock ' +
-      this.options.langPrefix +
+      langPrefix +
       escape(lang, true) +
       '">' +
       (escaped ? code : escape(code, true)) +
