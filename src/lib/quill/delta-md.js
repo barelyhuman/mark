@@ -2,6 +2,7 @@ import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
 import TurndownService from "turndown";
 const turndownService = new TurndownService({
   codeBlockStyle: "fenced",
+  headingStyle: "atx",
 });
 
 turndownService.addRule("code-fence-language", {
