@@ -2,13 +2,13 @@
   <BaseLayout>
     <Toast ref="toastRef" />
     <Editor
-      v-if="settings.rawMode"
+      v-if="settings.value.rawMode"
       class="mt-1"
       v-on:change="handleRawChange"
       v-bind:code="state.code"
     />
     <RichEditor
-      v-if="!settings.rawMode"
+      v-if="!settings.value.rawMode"
       v-on:change="handleChange"
       v-bind:initialCode="state.code"
       v-bind:opsState="state.opsFromStorage"
@@ -84,47 +84,42 @@
 
 <script setup>
 import BaseLayout from "../components/base-layout.vue";
-import Menu from "../components/menu.vue";
-import MenuItem from "../components/menu-item.vue";
-import Toolbar from "../components/toolbar.vue";
+import Button from "../components/button.vue";
 import RichEditor from "../components/editor-rich.vue";
 import Editor from "../components/editor.vue";
-import Button from "../components/button.vue";
-import Preview from "../components/preview.vue";
-import Toast from "../components/toast.vue";
-import { copy } from "../lib/copy";
-import { defaultMarkdownText } from "../resources/default-md";
-import { reactive, onMounted, ref, onUnmounted } from "vue";
-import marked from "../lib/marked";
-import html2pdf from "html2pdf.js";
-import getMDStyles from "../lib/get-md-styles";
+import MenuItem from "../components/menu-item.vue";
+import Menu from "../components/menu.vue";
+import Toolbar from "../components/toolbar.vue";
 import toImage from "dom-to-image";
 import download from "downloadjs";
-import { deltaToMarkdown } from "../lib/quill/delta-md.js";
+import html2pdf from "html2pdf.js";
+import { onMounted, onUnmounted, reactive, ref } from "vue";
 import SettingsModal from "../components/settings-modal.vue";
-import { loadSettings } from "../lib/settings.js";
+import Toast from "../components/toast.vue";
+import { copy } from "../lib/copy";
+import getMDStyles from "../lib/get-md-styles";
+import marked from "../lib/marked";
+import { deltaToMarkdown, markdownToDelta } from "../lib/quill/delta-md.js";
+import { defaultMarkdownText } from "../resources/default-md";
+import { settings } from "../stores/settings.js";
 
 const toastRef = ref(null);
-
-const settings = loadSettings();
 
 const STORAGE_TOKEN = Symbol("reaper-mark").toString();
 const STORAGE_TOKEN_RAW = Symbol("reaper-mark-raw-text").toString();
 
 const getDefaultCode = () => {
-  const existingState = localStorage.getItem(STORAGE_TOKEN);
+  const existingState = localStorage.getItem(STORAGE_TOKEN_RAW);
   try {
-    const ops = JSON.parse(existingState || []);
-    const markdownText = deltaToMarkdown(ops);
-    return markdownText;
+    return existingState;
   } catch (err) {
     return defaultMarkdownText;
   }
 };
 
 const getFromStorage = () => {
-  const existingState = localStorage.getItem(STORAGE_TOKEN) || [];
-  return existingState;
+  const existingCode = localStorage.getItem(STORAGE_TOKEN_RAW) || [];
+  return JSON.stringify(markdownToDelta(existingCode));
 };
 
 const state = reactive({
@@ -169,14 +164,16 @@ function onSettingsModalClose() {
   state.modals.settings = false;
 }
 
-function handleRawChange(code){
-  console.log({code})
+function handleRawChange(code) {
   state.code = code;
+  const ops = markdownToDelta(code);
   localStorage.setItem(STORAGE_TOKEN_RAW, code);
+  localStorage.setItem(STORAGE_TOKEN, JSON.stringify(ops));
 }
 
 function handleChange({ code, ops }) {
   state.code = code;
+  localStorage.setItem(STORAGE_TOKEN_RAW, code);
   localStorage.setItem(STORAGE_TOKEN, ops);
 }
 
