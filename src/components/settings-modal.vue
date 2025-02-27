@@ -14,9 +14,8 @@
 </template>
 
 <script setup>
-import { effect, onMounted, reactive } from "vue";
+import { effect, reactive } from "vue";
 import { loadSettings, updateSettings } from "../lib/settings.js";
-import equal from "fast-deep-equal";
 
 const props = defineProps(["onClose"]);
 const modalState = reactive({ settings: loadSettings() });
