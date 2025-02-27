@@ -36,8 +36,8 @@
   },
   "resolutions": {
     "trim": "1.0.1",
-    "micromatch":">=4.0.8",
-    "dompurify":">=2.5.0",
-    "braces":">=3.0.3"
+    "micromatch": ">=4.0.8",
+    "dompurify": ">=2.5.0",
+    "braces": ">=3.0.3"
   }
 }

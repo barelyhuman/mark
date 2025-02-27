@@ -1,26 +1,72 @@
 <template>
   <BaseLayout>
     <Toast ref="toastRef" />
-    <Editor v-on:change="handleChange" v-bind:initialCode="state.code" v-bind:opsState="state.opsFromStorage"></Editor>
+    <Editor
+      v-if="settings.rawMode"
+      class="mt-1"
+      v-on:change="handleRawChange"
+      v-bind:code="state.code"
+    />
+    <RichEditor
+      v-if="!settings.rawMode"
+      v-on:change="handleChange"
+      v-bind:initialCode="state.code"
+      v-bind:opsState="state.opsFromStorage"
+    />
     <Toolbar>
       <Menu triggerLabel="Menu">
-        <MenuItem label="Copy as Markdown" @click="handleCopyAsMD" modifier="⌘ + ⇧ + c" />
+        <MenuItem
+          label="Copy as Markdown"
+          @click="handleCopyAsMD"
+          modifier="⌘ + ⇧ + c"
+        />
         <MenuItem label="Copy as HTML" @click="handleCopyAsHTML" />
         <MenuItem label="Save File" modifier="⌘ + s" @click="handleSaveFile" />
-        <MenuItem label="Save File as HTML" modifier="⌘ + ⇧ + s " @click="handleSaveAsHTML" />
+        <MenuItem
+          label="Save File as HTML"
+          modifier="⌘ + ⇧ + s "
+          @click="handleSaveAsHTML"
+        />
         <MenuItem label="Save File as PDF" @click="handleSaveAsPDF" />
         <MenuItem label="Save File as Image" @click="handleSaveAsImage" />
+        <MenuItem label="Settings" @click="openSettings" />
       </Menu>
       <div class="flex align-center">
-        <Button class="trigger ghost" v-bind:class="{ active: state.copied }" @click="handleCopyAsHTML">
-          <svg v-if="!state.copied" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-            stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <Button
+          class="trigger ghost"
+          v-bind:class="{ active: state.copied }"
+          @click="handleCopyAsHTML"
+        >
+          <svg
+            v-if="!state.copied"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
             <rect x="8" y="8" width="12" height="12" rx="2"></rect>
-            <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path>
+            <path
+              d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"
+            ></path>
           </svg>
-          <svg v-if="state.copied" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-            stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <svg
+            v-if="state.copied"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
             <circle cx="12" cy="12" r="9"></circle>
             <path d="M9 12l2 2l4 -4"></path>
@@ -28,8 +74,11 @@
         </Button>
       </div>
     </Toolbar>
-    <!-- <Editor v-if="!state.showPreview" class="mt-1" v-on:change="handleChange" v-bind:code="state.code"></Editor>
-    <Preview v-if="state.showPreview" v-bind:code="marked(state.code)" /> -->
+    <!-- <Preview v-if="state.showPreview" v-bind:code="marked(state.code)" /> -->
+    <SettingsModal
+      v-if="state.modals.settings"
+      :onClose="onSettingsModalClose"
+    />
   </BaseLayout>
 </template>
 
@@ -38,7 +87,8 @@ import BaseLayout from "../components/base-layout.vue";
 import Menu from "../components/menu.vue";
 import MenuItem from "../components/menu-item.vue";
 import Toolbar from "../components/toolbar.vue";
-import Editor from "../components/editor-rich.vue";
+import RichEditor from "../components/editor-rich.vue";
+import Editor from "../components/editor.vue";
 import Button from "../components/button.vue";
 import Preview from "../components/preview.vue";
 import Toast from "../components/toast.vue";
@@ -51,19 +101,24 @@ import getMDStyles from "../lib/get-md-styles";
 import toImage from "dom-to-image";
 import download from "downloadjs";
 import { deltaToMarkdown } from "../lib/quill/delta-md.js";
+import SettingsModal from "../components/settings-modal.vue";
+import { loadSettings } from "../lib/settings.js";
 
 const toastRef = ref(null);
 
+const settings = loadSettings();
+
 const STORAGE_TOKEN = Symbol("reaper-mark").toString();
+const STORAGE_TOKEN_RAW = Symbol("reaper-mark-raw-text").toString();
 
 const getDefaultCode = () => {
   const existingState = localStorage.getItem(STORAGE_TOKEN);
   try {
-    const ops = JSON.parse(existingState || [])
-    const markdownText = deltaToMarkdown(ops)
+    const ops = JSON.parse(existingState || []);
+    const markdownText = deltaToMarkdown(ops);
     return markdownText;
   } catch (err) {
-    return defaultMarkdownText
+    return defaultMarkdownText;
   }
 };
 
@@ -74,6 +129,9 @@ const getFromStorage = () => {
 
 const state = reactive({
   copied: false,
+  modals: {
+    settings: false,
+  },
   code: getDefaultCode(),
   opsFromStorage: getFromStorage(),
 });
@@ -101,6 +159,20 @@ function shortcutListener(e) {
     e.preventDefault();
     return handleSaveFile();
   }
+}
+
+function openSettings() {
+  state.modals.settings = true;
+}
+
+function onSettingsModalClose() {
+  state.modals.settings = false;
+}
+
+function handleRawChange(code){
+  console.log({code})
+  state.code = code;
+  localStorage.setItem(STORAGE_TOKEN_RAW, code);
 }
 
 function handleChange({ code, ops }) {
