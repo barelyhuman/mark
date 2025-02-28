@@ -11,9 +11,9 @@ defineProps({
 <style scoped>
 .markdown-preview {
   font-family: "IBM Plex Sans", sans-serif;
-  margin:0 auto;
+  margin: 0 auto;
   width: 100%;
-  padding:10px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

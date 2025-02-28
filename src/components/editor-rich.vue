@@ -1,5 +1,11 @@
 <template>
-  <div name="" ref="texteditor" autofocus="true" class="flex-1 w-full code-editor" id="editor"></div>
+  <div
+    name=""
+    ref="texteditor"
+    autofocus="true"
+    class="flex-1 w-full code-editor"
+    id="editor"
+  ></div>
 </template>
 <script>
 import "quill/dist/quill.bubble.css";
@@ -47,9 +53,9 @@ export default {
       try {
         ops = JSON.parse(props.opsState);
       } catch (err) {
-        // Migration change to move from 
-        // storing markdown to quill delta 
-        // if a syntax error is found, try converting it 
+        // Migration change to move from
+        // storing markdown to quill delta
+        // if a syntax error is found, try converting it
         if (err instanceof SyntaxError) {
           ops = converter.convert(props.opsState);
         }

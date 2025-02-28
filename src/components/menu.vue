@@ -1,10 +1,17 @@
 <template>
   <div class="container">
-    <Button @click="state.dropdownOpen = !state.dropdownOpen" class="ghost trigger">
+    <Button
+      @click="state.dropdownOpen = !state.dropdownOpen"
+      class="ghost trigger"
+    >
       {{ triggerLabel }}
     </Button>
 
-    <div v-if="state.dropdownOpen" class="dropdown" @click="state.dropdownOpen = false"></div>
+    <div
+      v-if="state.dropdownOpen"
+      class="dropdown"
+      @click="state.dropdownOpen = false"
+    ></div>
 
     <div v-if="state.dropdownOpen" class="dropdown-items">
       <slot></slot>

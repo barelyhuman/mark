@@ -10,12 +10,8 @@ export default defineConfig({
       output: {
         manualChunks: {
           highlightjs: ["highlight.js"],
-          quill: [
-            "quill",
-            "quilljs-markdown",
-            "md-to-quill-delta",
-          ],
-          vendor:["html2pdf.js"]
+          quill: ["quill", "quilljs-markdown", "md-to-quill-delta"],
+          vendor: ["html2pdf.js"],
         },
       },
     },

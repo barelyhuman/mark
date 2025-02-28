@@ -1,6 +1,5 @@
 <template>
-    <div class="toolbar">
-        <slot />
-    </div>
+  <div class="toolbar">
+    <slot />
+  </div>
 </template>
-  
