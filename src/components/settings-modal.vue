@@ -5,17 +5,35 @@
         <div class="modal-header">
           <h3>Settings</h3>
           <Button @click="onClose">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-x">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="icon icon-tabler icons-tabler-outline icon-tabler-x"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M18 6l-12 12" />
               <path d="M6 6l12 12" />
             </svg>
           </Button>
         </div>
         <div class="modal-body">
-          <label class="toggle-label">
-            <input v-model="settings.value.rawMode" type="checkbox" />
-            Raw Edit Mode
+          <label class="checkbox-container">
+            <input
+              v-model="settings.value.rawMode"
+              type="checkbox"
+              name="rawMode"
+            />
+            <span class="checkbox">
+              <span class="checkbox-overlay"></span>
+            </span>
+            <span class="checkbox-label">Raw Edit Mode </span>
           </label>
         </div>
       </div>
@@ -24,8 +42,8 @@
 </template>
 
 <script setup>
-import { settings } from '../stores/settings';
-import Button from './button.vue';
+import { settings } from "../stores/settings";
+import Button from "./button.vue";
 
 const props = defineProps(["onClose"]);
 </script>
@@ -94,5 +112,58 @@ input[type="checkbox"] {
   width: 18px;
   height: 18px;
   cursor: pointer;
+}
+
+.checkbox-container {
+  display: inline-flex;
+  position: relative;
+  gap: 0.5rem;
+}
+
+.checkbox-container input[type="checkbox"] {
+  display: none;
+  cursor: pointer;
+}
+
+.checkbox-container input[type="checkbox"]:after {
+  opacity: 1;
+}
+
+.checkbox-container .checkbox {
+  display: inline-flex;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  justify-content: center;
+  align-items: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 0.375rem;
+  border-width: 2px;
+  background: overlay;
+  border-color: var(--text);
+  border-style: solid;
+}
+
+.checkbox-container .checkbox-overlay {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 2px;
+  opacity: 0;
+  background: var(--text);
+}
+
+.checkbox-container .checkbox-label { 
+  margin-left: 2rem;
+}
+
+input[type="checkbox"]:checked ~ .checkbox > .checkbox-overlay{
+  opacity:1
 }
 </style>
