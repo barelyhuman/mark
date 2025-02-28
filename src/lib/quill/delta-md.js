@@ -28,8 +28,8 @@ export const deltaToMarkdown = (delta) => {
         typeof d.insert === "string"
           ? d.insert
           : d.insert && d.insert.value
-          ? d.insert.value
-          : ""
+            ? d.insert.value
+            : ""
       )
       .join("");
     return `<pre data-language="${data.op.attributes["code-block"]}"><code>${codeContent}</code></pre>`;
@@ -40,7 +40,7 @@ export const deltaToMarkdown = (delta) => {
 export const markdownToDelta = (markdown) => {
   const html = marked(markdown);
   const container = document.createElement("div");
-  container.innerHTML = html.replace(/\n/g, "&#8203;</br>");
+  container.innerHTML = html;
   const quillInstance = new Quill(container);
   return quillInstance.getContents().ops;
 };

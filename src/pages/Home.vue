@@ -102,6 +102,7 @@ import marked from "../lib/marked";
 import { deltaToMarkdown, markdownToDelta } from "../lib/quill/delta-md.js";
 import { defaultMarkdownText } from "../resources/default-md";
 import { settings } from "../stores/settings.js";
+import {watch} from "vue"
 
 const toastRef = ref(null);
 
@@ -117,8 +118,11 @@ const getDefaultCode = () => {
   }
 };
 
+
+
+
 const getFromStorage = () => {
-  const existingCode = localStorage.getItem(STORAGE_TOKEN_RAW) || ``;
+  const existingCode = localStorage.getItem(STORAGE_TOKEN_RAW) || defaultMarkdownText;
   return JSON.stringify(markdownToDelta(existingCode));
 };
 
@@ -130,6 +134,11 @@ const state = reactive({
   code: getDefaultCode(),
   opsFromStorage: getFromStorage(),
 });
+
+watch(()=>settings.value.rawMode,()=>{
+  state.code = getDefaultCode()
+  state.opsFromStorage = getFromStorage()
+})
 
 onMounted(() => {
   document.addEventListener("keydown", shortcutListener.bind(this));
