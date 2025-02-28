@@ -2,10 +2,17 @@
   <BaseLayout>
     <Toast ref="toastRef" />
     <Editor
+      v-if="settings.value.rawMode"
+      class="mt-1"
+      v-on:change="handleRawChange"
+      v-bind:code="state.code"
+    />
+    <RichEditor
+      v-if="!settings.value.rawMode"
       v-on:change="handleChange"
       v-bind:initialCode="state.code"
       v-bind:opsState="state.opsFromStorage"
-    ></Editor>
+    />
     <Toolbar>
       <Menu triggerLabel="Menu">
         <MenuItem
@@ -22,6 +29,7 @@
         />
         <MenuItem label="Save File as PDF" @click="handleSaveAsPDF" />
         <MenuItem label="Save File as Image" @click="handleSaveAsImage" />
+        <MenuItem label="Settings" @click="openSettings" />
       </Menu>
       <div class="flex align-center">
         <Button
@@ -66,55 +74,67 @@
         </Button>
       </div>
     </Toolbar>
-    <!-- <Editor v-if="!state.showPreview" class="mt-1" v-on:change="handleChange" v-bind:code="state.code"></Editor>
-    <Preview v-if="state.showPreview" v-bind:code="marked(state.code)" /> -->
+    <!-- <Preview v-if="state.showPreview" v-bind:code="marked(state.code)" /> -->
+    <SettingsModal
+      v-if="state.modals.settings"
+      :onClose="onSettingsModalClose"
+    />
   </BaseLayout>
 </template>
 
 <script setup>
 import BaseLayout from "../components/base-layout.vue";
-import Menu from "../components/menu.vue";
-import MenuItem from "../components/menu-item.vue";
-import Toolbar from "../components/toolbar.vue";
-import Editor from "../components/editor-rich.vue";
 import Button from "../components/button.vue";
-import Preview from "../components/preview.vue";
-import Toast from "../components/toast.vue";
-import { copy } from "../lib/copy";
-import { defaultMarkdownText } from "../resources/default-md";
-import { reactive, onMounted, ref, onUnmounted } from "vue";
-import marked from "../lib/marked";
-import html2pdf from "html2pdf.js";
-import getMDStyles from "../lib/get-md-styles";
+import RichEditor from "../components/editor-rich.vue";
+import Editor from "../components/editor.vue";
+import MenuItem from "../components/menu-item.vue";
+import Menu from "../components/menu.vue";
+import Toolbar from "../components/toolbar.vue";
 import toImage from "dom-to-image";
 import download from "downloadjs";
-import { deltaToMarkdown } from "../lib/quill/delta-md.js";
+import html2pdf from "html2pdf.js";
+import { onMounted, onUnmounted, reactive, ref } from "vue";
+import SettingsModal from "../components/settings-modal.vue";
+import Toast from "../components/toast.vue";
+import { copy } from "../lib/copy";
+import getMDStyles from "../lib/get-md-styles";
+import marked from "../lib/marked";
+import { deltaToMarkdown, markdownToDelta } from "../lib/quill/delta-md.js";
+import { defaultMarkdownText } from "../resources/default-md";
+import { settings } from "../stores/settings.js";
+import { watch } from "vue";
 
 const toastRef = ref(null);
 
 const STORAGE_TOKEN = Symbol("reaper-mark").toString();
+const STORAGE_TOKEN_RAW = Symbol("reaper-mark-raw-text").toString();
 
 const getDefaultCode = () => {
-  const existingState = localStorage.getItem(STORAGE_TOKEN);
-  try {
-    const ops = JSON.parse(existingState || []);
-    const markdownText = deltaToMarkdown(ops);
-    return markdownText;
-  } catch (err) {
-    return defaultMarkdownText;
-  }
+  return localStorage.getItem(STORAGE_TOKEN_RAW) || defaultMarkdownText;
 };
 
 const getFromStorage = () => {
-  const existingState = localStorage.getItem(STORAGE_TOKEN) || [];
-  return existingState;
+  const existingCode =
+    localStorage.getItem(STORAGE_TOKEN_RAW) || defaultMarkdownText;
+  return JSON.stringify(markdownToDelta(existingCode));
 };
 
 const state = reactive({
   copied: false,
+  modals: {
+    settings: false,
+  },
   code: getDefaultCode(),
   opsFromStorage: getFromStorage(),
 });
+
+watch(
+  () => settings.value.rawMode,
+  () => {
+    state.code = getDefaultCode();
+    state.opsFromStorage = getFromStorage();
+  },
+);
 
 onMounted(() => {
   document.addEventListener("keydown", shortcutListener.bind(this));
@@ -141,8 +161,24 @@ function shortcutListener(e) {
   }
 }
 
+function openSettings() {
+  state.modals.settings = true;
+}
+
+function onSettingsModalClose() {
+  state.modals.settings = false;
+}
+
+function handleRawChange(code) {
+  state.code = code;
+  const ops = markdownToDelta(code);
+  localStorage.setItem(STORAGE_TOKEN_RAW, code);
+  localStorage.setItem(STORAGE_TOKEN, JSON.stringify(ops));
+}
+
 function handleChange({ code, ops }) {
   state.code = code;
+  localStorage.setItem(STORAGE_TOKEN_RAW, code);
   localStorage.setItem(STORAGE_TOKEN, ops);
 }
 

@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <Button
+      v-click-outside="onClickOutside"
       @click="state.dropdownOpen = !state.dropdownOpen"
       class="ghost trigger"
     >
@@ -27,6 +28,24 @@ defineProps({
   menuItems: Array,
   triggerLabel: String,
 });
+
+const onClickOutside = () => {
+  state.dropdownOpen = false;
+};
+
+const vClickOutside = {
+  mounted: (el, binding, vnode) => {
+    el.clickOutsideEvent = function (event) {
+      if (!(el == event.target || el.contains(event.target))) {
+        binding.value(event);
+      }
+    };
+    document.addEventListener("click", el.clickOutsideEvent);
+  },
+  unmounted: (el) => {
+    document.removeEventListener("click", el.clickOutsideEvent);
+  },
+};
 
 const state = reactive({ dropdownOpen: false });
 </script>

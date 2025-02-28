@@ -584,7 +584,7 @@ packages:
     engines: {node: ^14.18.0 || >=16.10.0}
 
   core-js@3.37.0:
-    resolution: {integrity: sha512-fu5vHevQ8ZG4og+LXug8ulUtVxjOcEYvifJr7L5Bfq9GOztVqsKd9/59hUk2ZSbCrS3BqUr3EpaYGIYzq7g3Ug==}
+    resolution: {integrity: sha512-fu5vHevQ8ZG4og+LXug8ulUtVxjOcEYvifJr7L5Bfq9GOztVqsKd9/59hUk2ZSbCrS3BqUr3EpaYGIYzq7g3Ug==, tarball: https://registry.npmjs.org/core-js/-/core-js-3.37.0.tgz}
 
   cross-spawn@7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
