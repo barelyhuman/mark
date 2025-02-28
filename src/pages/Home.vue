@@ -118,7 +118,7 @@ const getDefaultCode = () => {
 };
 
 const getFromStorage = () => {
-  const existingCode = localStorage.getItem(STORAGE_TOKEN_RAW) || [];
+  const existingCode = localStorage.getItem(STORAGE_TOKEN_RAW) || ``;
   return JSON.stringify(markdownToDelta(existingCode));
 };
 
