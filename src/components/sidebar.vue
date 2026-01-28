@@ -39,7 +39,6 @@
           @keydown.enter="handleTitleBlur"
           @keydown.esc="cancelEdit"
           class="tab-title-input"
-          ref="titleInput"
           @click.stop
         />
         <span v-else class="tab-title" @dblclick="startEdit(tab)">
@@ -86,7 +85,6 @@ const tabs = tabsState.tabs;
 const activeTabId = ref(tabsState.activeTabId);
 const editingTabId = ref(null);
 const editingTitle = ref("");
-const titleInput = ref(null);
 
 // Watch for active tab changes
 import { watch } from "vue";
@@ -116,9 +114,11 @@ function startEdit(tab) {
   editingTabId.value = tab.id;
   editingTitle.value = tab.title;
   nextTick(() => {
-    if (titleInput.value) {
-      titleInput.value.focus();
-      titleInput.value.select();
+    const inputs = document.querySelectorAll('.tab-title-input');
+    const input = Array.from(inputs).find(el => el.value === editingTitle.value);
+    if (input) {
+      input.focus();
+      input.select();
     }
   });
 }
