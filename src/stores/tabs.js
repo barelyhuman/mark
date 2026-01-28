@@ -5,7 +5,7 @@ const ACTIVE_TAB_KEY = "mark:activeTab";
 
 // Generate unique ID for tabs
 function generateId() {
-  return `tab-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  return `tab-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
 }
 
 // Load tabs from localStorage
@@ -65,11 +65,15 @@ function saveActiveTabId(tabId) {
 
 // Initialize tabs state
 const initialTabs = loadTabs();
-const initialActiveTabId = loadActiveTabId() || initialTabs[0].id;
+const initialActiveTabId = loadActiveTabId();
+// Validate that the active tab ID exists in the tabs array
+const validatedActiveTabId = initialTabs.find(tab => tab.id === initialActiveTabId) 
+  ? initialActiveTabId 
+  : initialTabs[0].id;
 
 export const tabsState = reactive({
   tabs: initialTabs,
-  activeTabId: initialActiveTabId,
+  activeTabId: validatedActiveTabId,
 });
 
 // Get active tab

@@ -39,6 +39,7 @@
           @keydown.enter="handleTitleBlur"
           @keydown.esc="cancelEdit"
           class="tab-title-input"
+          :data-tab-id="tab.id"
           @click.stop
         />
         <span v-else class="tab-title" @dblclick="startEdit(tab)">
@@ -114,8 +115,7 @@ function startEdit(tab) {
   editingTabId.value = tab.id;
   editingTitle.value = tab.title;
   nextTick(() => {
-    const inputs = document.querySelectorAll('.tab-title-input');
-    const input = Array.from(inputs).find(el => el.value === editingTitle.value);
+    const input = document.querySelector(`input[data-tab-id="${tab.id}"]`);
     if (input) {
       input.focus();
       input.select();
