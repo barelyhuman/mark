@@ -29,7 +29,7 @@
         v-for="tab in tabs"
         :key="tab.id"
         class="tab-item"
-        :class="{ active: tab.id === activeTabId }"
+        :class="{ active: tab.id === tabsState.activeTabId }"
         @click="handleTabClick(tab.id)"
       >
         <input
@@ -83,32 +83,19 @@ import {
 } from "../stores/tabs.js";
 
 const tabs = tabsState.tabs;
-const activeTabId = ref(tabsState.activeTabId);
 const editingTabId = ref(null);
 const editingTitle = ref("");
 
-// Watch for active tab changes
-import { watch } from "vue";
-watch(
-  () => tabsState.activeTabId,
-  (newId) => {
-    activeTabId.value = newId;
-  },
-);
-
 function handleNewTab() {
   createTab();
-  activeTabId.value = tabsState.activeTabId;
 }
 
 function handleTabClick(tabId) {
   setActiveTab(tabId);
-  activeTabId.value = tabId;
 }
 
 function handleCloseTab(tabId) {
   closeTab(tabId);
-  activeTabId.value = tabsState.activeTabId;
 }
 
 function startEdit(tab) {
