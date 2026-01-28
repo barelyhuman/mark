@@ -140,6 +140,8 @@ function cancelEdit() {
 <style scoped>
 .sidebar {
   width: 250px;
+  min-width: 250px;
+  flex-shrink: 0;
   background: var(--base);
   border-right: 1px solid var(--border, #e1e4e8);
   display: flex;
