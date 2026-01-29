@@ -129,8 +129,8 @@ function cancelEdit() {
   width: 250px;
   min-width: 250px;
   flex-shrink: 0;
-  background: var(--base);
-  border-right: 1px solid var(--border, #e1e4e8);
+  background: var(--overlay);
+  border-right: 1px solid var(--overlay);
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -144,7 +144,7 @@ function cancelEdit() {
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  border-bottom: 1px solid var(--border, #e1e4e8);
+  border-bottom: 1px solid var(--overlay);
 }
 
 .sidebar-title {
