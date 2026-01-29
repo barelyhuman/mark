@@ -35,7 +35,7 @@
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/compiler-sfc": "^3.5.13",
     "autoprefixer": "^10.4.20",
-    "bumpp": "^9.11.1",
+    "bumpp": "^10.4.0",
     "cssnano": "^7.0.6",
     "husky": "^9.1.7",
     "nano-staged": "^0.8.0",
